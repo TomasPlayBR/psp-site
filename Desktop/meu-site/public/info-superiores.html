@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <title>Informações Superiores | PSP Sucesso RP</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ======= ESTILO ESPECÍFICO PARA INFO SUPERIORES ======= */
+        .info-superiores {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 30px 25px;
+            background: linear-gradient(135deg, #0b3c6d, #1e6fbf);
+            border-radius: 15px;
+            color: #fff;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+
+        .info-superiores h2 {
+            text-align: center;
+            color: #f0c040;
+            margin-bottom: 25px;
+            font-size: 32px;
+        }
+
+        .info-superiores ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .info-superiores ul li {
+            background-color: rgba(255,255,255,0.1);
+            margin: 10px 0;
+            padding: 15px 20px;
+            border-left: 5px solid #f0c040;
+            border-radius: 8px;
+            font-size: 18px;
+        }
+
+        .info-superiores .note {
+            margin-top: 25px;
+            font-style: italic;
+            color: #ddd;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .info-superiores .back-btn {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 30px;
+            background-color: #f0c040;
+            color: #0b1c2d;
+            font-weight: bold;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .info-superiores .back-btn:hover {
+            background-color: #d1a825;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Informações Superiores</h1>
+    <p>Bem-vindo, <span id="loggedUser">Visitante</span></p>
+
+    <nav class="menu">
+        <a href="index.html">Início</a>
+        <a href="blacklist.html">Blacklist</a>
+        <a href="junta-te.html">Junta-te a Nós</a>
+        <a href="hub.html" id="hubLink">Hub</a>
+        <a href="login.html">Login</a>
+        <a href="#" onclick="logout()" id="logoutBtn" style="display:none;">Logout</a>
+    </nav>
+</header>
+
+<section class="info-superiores">
+    <h2>Motivos para Rebaixamento</h2>
+    <ul>
+        <li>Não fazer uso da sua função durante uma semana sem apresentar inatividade.</li>
+        <li>Falta de respeito de grau leve.</li>
+        <li>Não executa bem a sua função.</li>
+        <li>Possível denúncia em RP.</li>
+        <li>Motivos da Direção.</li>
+    </ul>
+    <p class="note">Mais informações em breve!</p>
+    <div style="text-align:center;">
+        <a href="superiores.html" class="back-btn">Voltar</a>
+    </div>
+</section>
+
+<footer>
+    © 2026 PSP - Sucesso RP - TomasPlayBR
+</footer>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="script.js"></script>
+    
+</body>
+</html>

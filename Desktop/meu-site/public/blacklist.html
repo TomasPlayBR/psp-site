@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <title>Blacklist | PSP Sucesso RP</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ====================== BLACKLIST ESPECÍFICO ====================== */
+        .blacklist-section {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 30px;
+            background: linear-gradient(135deg, #0b3c6d, #1e6fbf);
+            border-radius: 15px;
+            color: #fff;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            text-align: center;
+        }
+
+        .blacklist-section h2 {
+            color: #f0c040;
+            margin-bottom: 25px;
+        }
+
+        #blacklistButtons {
+            margin-bottom: 20px;
+        }
+
+        #blacklistButtons button {
+            padding: 10px 20px;
+            margin: 5px;
+            font-weight: bold;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            background-color: #f0c040;
+            color: #0b1c2d;
+            transition: 0.3s;
+        }
+
+        #blacklistButtons button:hover {
+            background-color: #d1a825;
+        }
+
+        #blacklistContainer {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .blacklist-card {
+            background-color: rgba(255,255,255,0.1);
+            border-left: 5px solid #f0c040;
+            border-radius: 10px;
+            padding: 15px 20px;
+            text-align: left;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transition: transform 0.2s;
+        }
+
+        .blacklist-card:hover {
+            transform: scale(1.02);
+        }
+
+        .blacklist-card small {
+            display: block;
+            margin-bottom: 8px;
+            color: #ddd;
+        }
+
+        .blacklist-card pre {
+            white-space: pre-wrap;
+            margin: 0;
+            color: #fff;
+        }
+
+        .blacklist-logo {
+            display: block;
+            margin: 0 auto 20px auto;
+            width: 300px;
+            max-width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="https://i.imgur.com/V68PbLn.png" alt="Logo da PSP" class="blacklist-logo">
+    <h1>Blacklist</h1>
+    <p>Bem-vindo, <span id="loggedUser">Visitante</span></p>
+
+    <nav class="menu">
+        <a href="index.html">Início</a>
+        <a href="blacklist.html">Blacklist</a>
+        <a href="junta-te.html">Junta-te a Nós</a>
+        <a href="hub.html" id="hubLink">Hub</a>
+        <a href="superiores.html" id="superioresLink">Superiores</a>
+        <a href="login.html">Login</a>
+        <a href="#" onclick="logout()" id="logoutBtn" style="display:none;">Logout</a>
+    </nav>
+</header>
+
+<section class="blacklist-section">
+    <h2>⛔ Blacklist Ativa</h2>
+    <div id="blacklistContainer"></div> 
+</section>
+
+<footer>
+    © 2026 PSP - Sucesso RP - TomasPlayBR
+</footer>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="script.js"></script>
+    
+</body>
+</html>

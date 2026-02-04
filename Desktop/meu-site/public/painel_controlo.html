@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Terminal de Gestão - PSP</title>
+    <link rel="stylesheet" href="style.css"> </head>
+<body>
+
+    <div class="header">
+        <h1>🛠️ Terminal de Gestão de Dados</h1>
+    </div>
+
+   <div class="container">
+    <div class="navigation">
+        <a href="superiores.html" class="back-link">← Voltar ao Gabinete Superior</a>
+    </div>
+
+    <div class="grid-forms">
+        <div class="form-card hub-border">
+            <div class="card-header">
+                <h2>👥 Registo de Efetivo</h2>
+                <span class="badge">HUB</span>
+            </div>
+            <div class="input-grid">
+                <div class="input-group">
+                    <label>Nome do Agente</label>
+                    <input type="text" id="mNome" placeholder="Ex: Rodrigo Silva">
+                </div>
+                <div class="input-group">
+                    <label>ID / Passaporte</label>
+                    <input type="text" id="mID" placeholder="Ex: 102">
+                </div>
+                <div class="input-group">
+                    <label>Cargo / Patente</label>
+                    <input type="text" id="mCargo" placeholder="Ex: Sub-Chefe">
+                </div>
+                <div class="input-group">
+                    <label>Callsign</label>
+                    <input type="text" id="mCallsign" placeholder="Ex: Águia 20">
+                </div>
+                <div class="input-group">
+                    <label>Discord Tag</label>
+                    <input type="text" id="mDiscord" placeholder="user#0000">
+                </div>
+                <div class="input-group">
+                    <label>Cursos</label>
+                    <input type="text" id="mCursos" placeholder="Ex: DAE, GOE">
+                </div>
+            </div>
+            <button class="btn-action btn-blue" onclick="salvarNovoMembro()">Finalizar Registo no HUB</button>
+        </div>
+
+        <div class="form-card black-border">
+            <div class="card-header">
+                <h2>🚨 Inserção na Blacklist</h2>
+                <span class="badge danger">PERIGO</span>
+            </div>
+            <div class="input-grid">
+                <div class="input-group">
+                    <label>Nome do Infrator</label>
+                    <input type="text" id="bNome" placeholder="Nome do Cidadão">
+                </div>
+                <div class="input-group">
+                    <label>ID do Infrator</label>
+                    <input type="text" id="bID" placeholder="ID (opcional)">
+                </div>
+                <div class="input-group full-width">
+                    <label>Motivo & Provas</label>
+                    <textarea id="bMotivo" placeholder="Descreve o motivo e links de provas..."></textarea>
+                </div>
+            </div>
+            <button class="btn-action btn-red" onclick="adicionarBlacklist()">Confirmar Banimento</button>
+        </div>
+    </div>
+</div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    
+    <script src="script.js"></script>
+
+</body>
+</html>

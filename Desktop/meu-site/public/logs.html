@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Auditoria - PSP</title>
+    <link rel="stylesheet" href="style.css"> <style>
+        body { background-color: #0a0a0a; color: #eee; font-family: 'Courier New', Courier, monospace; }
+        .log-container { max-width: 1000px; margin: 30px auto; padding: 20px; background: #111; border: 1px solid #333; border-radius: 5px; box-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        .log-header { border-bottom: 2px solid #0056b3; padding-bottom: 10px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .log-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        .log-table th { background: #0056b3; color: white; padding: 12px; text-align: left; text-transform: uppercase; }
+        .log-table td { padding: 10px; border-bottom: 1px solid #222; }
+        .log-table tr:hover { background: #1a1a1a; }
+        .status-tag { padding: 3px 8px; border-radius: 3px; font-weight: bold; font-size: 11px; }
+        .tag-diretor { background: #ff4444; color: white; }
+        .tag-superior { background: #ffbb33; color: black; }
+        .tag-agente { background: #00C851; color: white; }
+        .acao-texto { color: #00e676; } /* Verde terminal para as ações */
+        .btn-voltar { background: #333; color: white; text-decoration: none; padding: 10px 20px; border-radius: 5px; transition: 0.3s; }
+        .btn-voltar:hover { background: #555; }
+    </style>
+</head>
+<body>
+
+    <div class="log-container">
+        <div class="log-header">
+            <h2>🚨 SISTEMA DE LOGS</h2>
+            <a href="index.html" class="btn-voltar">Voltar ao Início</a>
+        </div>
+
+        <table class="log-table">
+            <thead>
+                <tr>
+                    <th>Data / Hora</th>
+                    <th>Responsável</th>
+                    <th>Cargo</th>
+                    <th>Ação Executada</th>
+                </tr>
+            </thead>
+            <tbody id="logTableBody">
+                </tbody>
+        </table>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="script.js"></script>
+
+    <script>
+        // Iniciar a visualização assim que a página carregar
+        document.addEventListener("DOMContentLoaded", () => {
+            renderLogs();
+        });
+    </script>
+</body>
+</html>
