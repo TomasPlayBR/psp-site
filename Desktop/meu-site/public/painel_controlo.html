@@ -28,15 +28,34 @@
 
         <div class="grid">
             <div class="card">
-                <h2>👥 Registo de Efetivo</h2>
-                <div class="input-group"><label>Nome</label><input type="text" id="mNome"></div>
-                <div class="input-group"><label>ID</label><input type="text" id="mID"></div>
-                <div class="input-group"><label>Cargo</label><input type="text" id="mCargo"></div>
-                <div class="input-group"><label>Callsign</label><input type="text" id="mCallsign"></div>
-                <div class="input-group"><label>Discord</label><input type="text" id="mDiscord"></div>
-                <div class="input-group"><label>Cursos</label><input type="text" id="mCursos"></div>
-                <button class="btn-blue" onclick="salvarNovoMembro()">Finalizar Registo</button>
-            </div>
+                <div class="card">
+    <h2>👥 Registo de Efetivo</h2>
+    <div class="input-group">
+        <label>Nome do Agente</label>
+        <input type="text" id="nome" placeholder="Ex: Rodrigo Silva">
+    </div>
+    <div class="input-group">
+        <label>ID / Passaporte</label>
+        <input type="text" id="idAgente" placeholder="Ex: 102">
+    </div>
+    <div class="input-group">
+        <label>Cargo / Patente</label>
+        <input type="text" id="patente" placeholder="Ex: Sub-Chefe">
+    </div>
+    <div class="input-group">
+        <label>Callsign</label>
+        <input type="text" id="callsign">
+    </div>
+    <div class="input-group">
+        <label>Discord Tag</label>
+        <input type="text" id="discord">
+    </div>
+    <div class="input-group">
+        <label>Cursos</label>
+        <input type="text" id="cursos">
+    </div>
+    <button class="btn-blue" onclick="salvarNovoMembro()">Finalizar Registo</button>
+</div>
 
             <div class="card">
                 <h2>🚨 Blacklist</h2>
