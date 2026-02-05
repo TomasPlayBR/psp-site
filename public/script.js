@@ -164,6 +164,13 @@ snapshot.forEach((doc) => {
                     <td>${item.dataEntrada || "N/A"}</td>
                     ${botoesAcao}
                 </tr>`;
+            tableBody.innerHTML += `
+                <tr data-id="${docId}">
+                    <td class="drag-handle" style="cursor: grab;">☰</td> <td>${item.nome}</td>
+                    <td>${item.idAgente || item.id}</td>
+                  <td style="color: #ffcc00; font-weight: bold;">${item.patente}</td>
+                  ${botoesAcao}
+                </tr>`;
          });
     }); // FECHA O snapshot
 } // FECHA O renderHub
