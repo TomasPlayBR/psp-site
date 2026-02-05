@@ -136,7 +136,7 @@ function renderHub() {
     const totalAgentes = document.getElementById("totalAgentes");
     if (!tableBody) return;
 
-    db.collection("membros").orderBy("cargo", "asc").onSnapshot((snapshot) => {
+    db.collection("membros").orderBy("patente", "asc").onSnapshot((snapshot) => {
         tableBody.innerHTML = "";
         if (totalAgentes) totalAgentes.innerText = snapshot.size;
 
