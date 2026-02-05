@@ -139,30 +139,34 @@ function renderHub() {
     db.collection("membros").onSnapshot((snapshot) => {
         tableBody.innerHTML = "";
         if (totalAgentes) totalAgentes.innerText = snapshot.size;
-
-        snapshot.forEach((doc) => {
+snapshot.forEach((doc) => {
             const item = doc.data();
             const docId = doc.id;
             const isDiretor = currentUser && currentUser.role === "Diretor Nacional";
 
-            const deleteBtn = isDiretor 
-                ? `<td><button onclick="removerMembro('${docId}', '${item.nome}')" style="background:none; border:none; cursor:pointer; font-size:18px;">🗑️</button></td>` 
+            // Define se mostra os botões ou apenas um traço
+            const botoesAcao = isDiretor 
+                ? `<td>
+                    <button onclick="editarMembro('${docId}')" style="background:none; border:none; cursor:pointer; font-size:18px;" title="Editar">📝</button>
+                    <button onclick="removerMembro('${docId}', '${item.nome}')" style="background:none; border:none; cursor:pointer; font-size:18px;" title="Apagar">🗑️</button>
+                   </td>`
                 : "<td>-</td>";
 
+            // Monta a linha da tabela (Tr)
             tableBody.innerHTML += `
                 <tr>
                     <td>${item.nome}</td>
-                    <td>${item.idAgente || item.id}</td>
+                    <td>${item.idAgente || item.id || "N/A"}</td>
                     <td>${item.discord || "N/A"}</td>
-                    <td style="color: #ffcc00; font-weight: bold;">${item.patente || item.cargo}</td>
+                    <td style="color: #ffcc00; font-weight: bold;">${item.patente || item.cargo || "N/A"}</td>
                     <td>${item.callsign || "N/A"}</td>
                     <td>${item.cursos || "Nenhum"}</td>
-                    <td>${item.dataEntrada}</td>
-                    ${deleteBtn}
+                    <td>${item.dataEntrada || "N/A"}</td>
+                    ${botoesAcao}
                 </tr>`;
-        });
-    });
-}
+         });
+    }); // FECHA O snapshot
+} // FECHA O renderHub
 
 async function salvarNovoMembro() {
     // 1. Captura os elementos primeiro
@@ -199,6 +203,8 @@ async function salvarNovoMembro() {
             callsign: elCallsign ? elCallsign.value : "N/A",
             dataEntrada: elData && elData.value ? elData.value : new Date().toLocaleDateString('pt-PT'),
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
+
+           
         });
 
         await registrarLog("Registou novo membro: " + nome);
@@ -211,6 +217,25 @@ async function salvarNovoMembro() {
     } catch (e) {
         console.error("Erro ao salvar:", e);
         alert("Erro ao salvar na base de dados.");
+    }
+}
+async function editarMembro(id) {
+    const novoNome = prompt("Nome completo:");
+    const novaPatente = prompt("Patente (ex: 01 - Diretor):");
+    const novoId = prompt("ID/Passaporte:");
+
+    if (novoNome && novaPatente && novoId) {
+        try {
+            await db.collection("membros").doc(id).update({
+                nome: novoNome,
+                patente: novaPatente,
+                idAgente: novoId
+            });
+            alert("✅ Atualizado!");
+        } catch (e) {
+            console.error("Erro ao editar:", e);
+            alert("Erro ao atualizar.");
+        }
     }
 }
 
