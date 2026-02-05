@@ -203,17 +203,15 @@ function ativarDragAndDrop() {
 
 /** SALVAR NOVO AGENTE **/
 async function salvarNovoMembro() {
-    const fields = {
-        nome: document.getElementById("nome"),
-        id: document.getElementById("idAgente"),
-        patente: document.getElementById("patente"),
-        discord: document.getElementById("discord"),
-        callsign: document.getElementById("callsign"),
-        data: document.getElementById("dataEntrada")
-    };
+    const nome = document.getElementById("nome").value;
+    const idAgente = document.getElementById("idAgente").value;
+    const patente = document.getElementById("patente").value;
+    const discord = document.getElementById("discord").value || "N/A";
+    const callsign = document.getElementById("callsign").value || "N/A";
+    const dataInp = document.getElementById("dataEntrada").value;
 
-    if (!fields.nome || !fields.id || !fields.patente) return;
-
+    if (!nome || !idAgente || !patente) return alert("Preenche os campos!");
+   
     // Capturamos os elementos do DOM
     const inputNome = document.getElementById("nome");
     const inputId = document.getElementById("idAgente");
@@ -289,29 +287,28 @@ async function removerMembro(id, nome) {
    6. BLACKLIST
 ========================= */
 async function adicionarBlacklist() {
-    cconst nome = document.getElementById("bNome")?.value;
+    const nome = document.getElementById("bNome")?.value;
     const bID = document.getElementById("bID")?.value;
     const motivo = document.getElementById("bMotivo")?.value;
-    if (!nome || !motivo || !bID) { 
-        alert("Preenche Nome, ID e Motivo!"); 
-        return;
-       
+
+    if (!nome || !motivo || !bID) return alert("Preenche tudo!");
+
     try {
         await db.collection("blacklist").add({
             nome: nome,
             id: bID,
             motivo: motivo,
-            autor: currentUser ? currentUser.username : "Desconhecido",
-            data: new Date().toLocaleDateString('pt-PT'),
-            hora: new Date().toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' }),
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            autor: currentUser ? currentUser.username : "Sistema",
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            data: new Date().toLocaleDateString('pt-PT')
         });
         await registrarLog(`Adicionou ${nome} à Blacklist`);
         alert("🚨 Blacklist Registada!");
-        window.location.href = "blacklist.html";
-    } catch (e) { alert("Erro ao gravar Blacklist!"); 
-    }
-
+        document.getElementById("formBlacklist").reset();
+    } catch (e) { 
+        console.error(e); 
+    } 
+}
 async function removerDaBlacklist(id) {
     // Busca o nome antes de apagar para o log ser preciso
     const doc = await db.collection("blacklist").doc(id).get();
