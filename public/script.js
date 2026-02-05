@@ -131,12 +131,14 @@ function filtrarHub() {
 /* =========================
     5. HUB (DATABASE)
 ========================= */
+
+/** RENDERIZAR O HUB **/
 function renderHub() {
     const tableBody = document.querySelector("#hubTable tbody");
     const totalAgentes = document.getElementById("totalAgentes");
     if (!tableBody) return;
 
-    // Ordenamos por "ordem" para o Drag & Drop funcionar
+    // Escuta em tempo real ordenada pela "ordem" definida no Drag & Drop
     db.collection("membros").orderBy("ordem", "asc").onSnapshot((snapshot) => {
         tableBody.innerHTML = "";
         if (totalAgentes) totalAgentes.innerText = snapshot.size;
@@ -153,7 +155,6 @@ function renderHub() {
                    </td>`
                 : "<td>-</td>";
 
-            // Monta apenas UMA linha com o handle de arrastar (☰)
             tableBody.innerHTML += `
                 <tr data-id="${docId}">
                     <td class="drag-handle" style="cursor: grab; text-align: center;">☰</td>
@@ -168,11 +169,11 @@ function renderHub() {
                 </tr>`;
         });
 
-        // Ativa o movimento após carregar os dados
         ativarDragAndDrop();
     });
 }
 
+/** ATIVAR DRAG & DROP **/
 function ativarDragAndDrop() {
     const el = document.querySelector("#hubTable tbody");
     if (!el || typeof Sortable === 'undefined') return;
@@ -182,7 +183,7 @@ function ativarDragAndDrop() {
         animation: 150,
         onEnd: async function () {
             const linhas = el.querySelectorAll('tr');
-            const batch = db.batch(); // Usar batch é mais rápido e seguro
+            const batch = db.batch(); 
             
             linhas.forEach((linha, index) => {
                 const id = linha.getAttribute('data-id');
@@ -192,7 +193,7 @@ function ativarDragAndDrop() {
 
             try {
                 await batch.commit();
-                console.log("Ordem atualizada com sucesso!");
+                console.log("Ordem atualizada!");
             } catch (e) {
                 console.error("Erro ao salvar ordem:", e);
             }
@@ -200,19 +201,22 @@ function ativarDragAndDrop() {
     });
 }
 
+/** SALVAR NOVO AGENTE **/
 async function salvarNovoMembro() {
-    const elNome = document.getElementById("nome");
-    const elId = document.getElementById("idAgente");
-    const elPatente = document.getElementById("patente");
-    const elDiscord = document.getElementById("discord");
-    const elCallsign = document.getElementById("callsign");
-    const elData = document.getElementById("dataEntrada");
+    const fields = {
+        nome: document.getElementById("nome"),
+        id: document.getElementById("idAgente"),
+        patente: document.getElementById("patente"),
+        discord: document.getElementById("discord"),
+        callsign: document.getElementById("callsign"),
+        data: document.getElementById("dataEntrada")
+    };
 
-    if (!elNome || !elId || !elPatente) return;
+    if (!fields.nome || !fields.id || !fields.patente) return;
 
-    const nome = elNome.value.trim();
-    const idAgente = elId.value.trim();
-    const patente = elPatente.value;
+    const nome = fields.nome.value.trim();
+    const idAgente = fields.id.value.trim();
+    const patente = fields.patente.value;
 
     if (!nome || !idAgente || !patente) {
         alert("Preenche os campos obrigatórios!");
@@ -220,31 +224,33 @@ async function salvarNovoMembro() {
     }
 
     try {
-        // Ao salvar novo, pomos no fim da lista (ordem alta)
         await db.collection("membros").add({
             nome: nome,
             idAgente: idAgente,
             patente: patente,
-            discord: elDiscord ? elDiscord.value : "N/A",
-            callsign: elCallsign ? elCallsign.value : "N/A",
-            dataEntrada: elData && elData.value ? elData.value : new Date().toLocaleDateString('pt-PT'),
+            discord: fields.discord ? fields.discord.value : "N/A",
+            callsign: fields.callsign ? fields.callsign.value : "N/A",
+            dataEntrada: fields.data && fields.data.value ? fields.data.value : new Date().toLocaleDateString('pt-PT'),
             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
             ordem: 999 
         });
 
-        await registrarLog("Registou novo membro: " + nome);
+        if (typeof registrarLog === 'function') await registrarLog("Registou novo membro: " + nome);
         alert("✅ Agente Registado!");
         const form = document.getElementById("formRegisto");
         if (form) form.reset();
     } catch (e) {
+        console.error(e);
         alert("Erro ao salvar.");
     }
 }
 
+/** EDITAR MEMBRO (Prompt) **/
 async function editarMembro(id) {
-    const novoNome = prompt("Nome completo:");
-    const novaPatente = prompt("Patente:");
-    const novoId = prompt("ID/Passaporte:");
+    // Busca os dados atuais para preencher o prompt (opcional, mas ajuda)
+    const novoNome = prompt("Novo Nome completo:");
+    const novaPatente = prompt("Nova Patente:");
+    const novoId = prompt("Novo ID/Passaporte:");
 
     if (novoNome && novaPatente && novoId) {
         try {
@@ -259,6 +265,20 @@ async function editarMembro(id) {
         }
     }
 }
+
+/** REMOVER MEMBRO **/
+async function removerMembro(id, nome) {
+    if (confirm(`Tem a certeza que deseja remover o agente ${nome}?`)) {
+        try {
+            await db.collection("membros").doc(id).delete();
+            if (typeof registrarLog === 'function') await registrarLog("Removeu o membro: " + nome);
+            alert("🗑️ Removido!");
+        } catch (e) {
+            alert("Erro ao eliminar.");
+        }
+    }
+}
+
 /* =========================
    6. BLACKLIST
 ========================= */
