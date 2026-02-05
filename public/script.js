@@ -143,31 +143,22 @@ function renderHub() {
         tableBody.innerHTML = "";
         if (totalAgentes) totalAgentes.innerText = snapshot.size;
 
-        snapshot.forEach((doc) => {
-            const item = doc.data();
-            const docId = doc.id;
-            const isDiretor = currentUser && currentUser.role === "Diretor Nacional";
+       snapshot.forEach((doc) => {
+    const item = doc.data();
+    const docId = doc.id;
+    const isDiretor = currentUser && currentUser.role === "Diretor Nacional";
 
-            const botoesAcao = isDiretor 
-                ? `<td>
-                    <button onclick="editarMembro('${docId}')" style="background:none; border:none; cursor:pointer; font-size:18px;" title="Editar">📝</button>
-                    <button onclick="removerMembro('${docId}', '${item.nome}')" style="background:none; border:none; cursor:pointer; font-size:18px;" title="Apagar">🗑️</button>
-                   </td>`
-                : "<td>-</td>";
-
-            tableBody.innerHTML += `
-    <tr data-id="${docId}">
-        <td class="drag-handle" style="cursor: grab; text-align: center;">☰</td>
-        <td>${item.nome}</td>
-        <td>${item.idAgente || item.id || "N/A"}</td>
-        <td>${item.discord || "N/A"}</td>
-        <td style="color: #ffcc00; font-weight: bold;">${item.patente || item.cargo || "N/A"}</td>
-        <td>${item.callsign || "N/A"}</td>
-        <td>${item.cursos || "Nenhum"}</td>
-        <td>${item.dataEntrada || "N/A"}</td>
-        ${botoesAcao}
-    </tr>`;
-   });
+            cconst botoesAcao = isDiretor 
+        ? `<td>
+            <button onclick="editarMembro('${docId}')" class="btn-delete" title="Editar">📝</button>
+            <button onclick="removerMembro('${docId}', '${item.nome}')" class="btn-delete" title="Apagar">🗑️</button>
+           </td>`
+        : "<td>-</td>";
+          
+            ttableBody.innerHTML += `
+        <tr data-id="${docId}">
+            <td class="drag-handle">☰</td>  <td>${item.nome}</td>           <td>${item.idAgente || "N/A"}</td> <td>${item.discord || "N/A"}</td>  <td style="color: #ffcc00; font-weight: bold;">${item.patente || "N/A"}</td> <td>${item.callsign || "N/A"}</td> <td>${item.cursos || "Nenhum"}</td> <td>${item.dataEntrada || "N/A"}</td> ${botoesAcao}                   </tr>`;
+});
 
         ativarDragAndDrop();
     });
