@@ -39,6 +39,34 @@
     
     .btn-delete { background: none; border: none; cursor: pointer; filter: grayscale(1); transition: 0.3s; }
     .btn-delete:hover { filter: none; transform: scale(1.2); }
+#hubTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: rgba(31, 41, 55, 0.7); /* Cor escura igual ao painel */
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+#hubTable th {
+    background: rgba(0, 0, 0, 0.3);
+    color: #ffcc00; /* Títulos em dourado como na imagem */
+    padding: 15px;
+    text-align: left;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+}
+
+#hubTable td {
+    padding: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    vertical-align: middle;
+}
+
+.drag-handle {
+    color: #4b5563;
+    font-size: 1.2rem;
+}
 </style>
 </head>
 <body>
@@ -70,7 +98,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
 
-<script src="script.js"></script>>
+<script src="script.js"></script>
 
 </body>
 </html>
