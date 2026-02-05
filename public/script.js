@@ -12,7 +12,6 @@ const firebaseConfig = {
   measurementId: "G-983EPHZ4GZ"
 };
 
-// Inicializa apenas se não houver outra app
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
@@ -26,9 +25,7 @@ let currentUser = null;
 ========================= */
 async function registrarLog(acao) {
     try {
-        // Tenta pegar o user do localStorage se a variável global falhar
         const userSnapshot = currentUser || JSON.parse(localStorage.getItem("loggedUser"));
-        
         await db.collection("logs").add({
             usuario: userSnapshot ? userSnapshot.username : "Sistema",
             cargo: userSnapshot ? userSnapshot.role : "N/A",
@@ -50,6 +47,8 @@ async function login() {
     const userInp = document.getElementById("user"); 
     const passInp = document.getElementById("pass");
     const msg = document.getElementById("msg");
+
+    if(!userInp || !passInp) return;
 
     const username = userInp.value.trim().toLowerCase();
     const pass = passInp.value.trim();
@@ -131,40 +130,44 @@ function filtrarHub() {
 /* =========================
     5. HUB (DATABASE)
 ========================= */
-
-/** RENDERIZAR O HUB **/
 function renderHub() {
     const tableBody = document.querySelector("#hubTable tbody");
     const totalAgentes = document.getElementById("totalAgentes");
     if (!tableBody) return;
 
-    // Escuta em tempo real ordenada pela "ordem" definida no Drag & Drop
     db.collection("membros").orderBy("ordem", "asc").onSnapshot((snapshot) => {
         tableBody.innerHTML = "";
         if (totalAgentes) totalAgentes.innerText = snapshot.size;
 
-       snapshot.forEach((doc) => {
-    const item = doc.data();
-    const docId = doc.id;
-    const isDiretor = currentUser && currentUser.role === "Diretor Nacional";
+        snapshot.forEach((doc) => {
+            const item = doc.data();
+            const docId = doc.id;
+            const isDiretor = currentUser && currentUser.role === "Diretor Nacional";
 
-            cconst botoesAcao = isDiretor 
-        ? `<td>
-            <button onclick="editarMembro('${docId}')" class="btn-delete" title="Editar">📝</button>
-            <button onclick="removerMembro('${docId}', '${item.nome}')" class="btn-delete" title="Apagar">🗑️</button>
-           </td>`
-        : "<td>-</td>";
-          
-            ttableBody.innerHTML += `
-        <tr data-id="${docId}">
-            <td class="drag-handle">☰</td>  <td>${item.nome}</td>           <td>${item.idAgente || "N/A"}</td> <td>${item.discord || "N/A"}</td>  <td style="color: #ffcc00; font-weight: bold;">${item.patente || "N/A"}</td> <td>${item.callsign || "N/A"}</td> <td>${item.cursos || "Nenhum"}</td> <td>${item.dataEntrada || "N/A"}</td> ${botoesAcao}                   </tr>`;
-});
-
+            const botoesAcao = isDiretor 
+                ? `<td>
+                    <button onclick="editarMembro('${docId}')" class="btn-delete" title="Editar">📝</button>
+                    <button onclick="removerMembro('${docId}', '${item.nome}')" class="btn-delete" title="Apagar">🗑️</button>
+                   </td>`
+                : "<td>-</td>";
+            
+            tableBody.innerHTML += `
+                <tr data-id="${docId}">
+                    <td class="drag-handle">☰</td>
+                    <td>${item.nome}</td>
+                    <td>${item.idAgente || "N/A"}</td>
+                    <td>${item.discord || "N/A"}</td>
+                    <td style="color: #ffcc00; font-weight: bold;">${item.patente || "N/A"}</td>
+                    <td>${item.callsign || "N/A"}</td>
+                    <td>${item.cursos || "Nenhum"}</td>
+                    <td>${item.dataEntrada || "N/A"}</td>
+                    ${botoesAcao}
+                </tr>`;
+        });
         ativarDragAndDrop();
     });
 }
 
-/** ATIVAR DRAG & DROP **/
 function ativarDragAndDrop() {
     const el = document.querySelector("#hubTable tbody");
     if (!el || typeof Sortable === 'undefined') return;
@@ -192,7 +195,6 @@ function ativarDragAndDrop() {
     });
 }
 
-/** SALVAR NOVO AGENTE **/
 async function salvarNovoMembro() {
     const nome = document.getElementById("nome").value;
     const idAgente = document.getElementById("idAgente").value;
@@ -202,47 +204,31 @@ async function salvarNovoMembro() {
     const dataInp = document.getElementById("dataEntrada").value;
 
     if (!nome || !idAgente || !patente) return alert("Preenche os campos!");
-   
-    // Capturamos os elementos do DOM
-    const inputNome = document.getElementById("nome");
-    const inputId = document.getElementById("idAgente");
-    const inputPatente = document.getElementById("patente");
-    const inputDiscord = document.getElementById("discord");
-    const inputCallsign = document.getElementById("callsign");
-    const inputData = document.getElementById("dataEntrada");
 
-    if (!nome || !idAgente || !patente) {
-        alert("Preenche os campos obrigatórios!");
-        return;
-    }
+
+    if (!inputNome.value || !inputId.value || !inputPatente.value) return alert("Preenche os campos obrigatórios!");
 
     try {
-        // Objeto a enviar para o Firestore
         await db.collection("membros").add({
             nome: inputNome.value.trim(),
             idAgente: inputId.value.trim(),
             patente: inputPatente.value.trim(),
             discord: inputDiscord ? inputDiscord.value : "N/A",
             callsign: inputCallsign ? inputCallsign.value : "N/A",
-            dataEntrada: (inputData && inputData.value) ? inputData.value : new Date().toLocaleDateString('pt-PT'),
+            dataEntrada: inputData.value || new Date().toLocaleDateString('pt-PT'),
             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
             ordem: 999 
         });
 
-        if (typeof registrarLog === 'function') await registrarLog("Registou novo membro: " + inputNome.value);
+        await registrarLog("Registou novo membro: " + inputNome.value);
         alert("✅ Agente registado com sucesso!");
-        document.getElementById('formRegisto').reset();
-        const form = document.getElementById("formRegisto");
-        if (form) form.reset();
+        document.getElementById("formRegisto").reset();
     } catch (error) {
-        console.error("Erro ao salvar:", error);
         alert("Erro ao salvar: " + error.message);
     }
 }
 
-/** EDITAR MEMBRO (Prompt) **/
 async function editarMembro(id) {
-    // Busca os dados atuais para preencher o prompt (opcional, mas ajuda)
     const novoNome = prompt("Novo Nome completo:");
     const novaPatente = prompt("Nova Patente:");
     const novoId = prompt("Novo ID/Passaporte:");
@@ -261,12 +247,11 @@ async function editarMembro(id) {
     }
 }
 
-/** REMOVER MEMBRO **/
 async function removerMembro(id, nome) {
     if (confirm(`Tem a certeza que deseja remover o agente ${nome}?`)) {
         try {
             await db.collection("membros").doc(id).delete();
-            if (typeof registrarLog === 'function') await registrarLog("Removeu o membro: " + nome);
+            await registrarLog("Removeu o membro: " + nome);
             alert("🗑️ Removido!");
         } catch (e) {
             alert("Erro ao eliminar.");
@@ -291,7 +276,8 @@ async function adicionarBlacklist() {
             motivo: motivo,
             autor: currentUser ? currentUser.username : "Sistema",
             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-            data: new Date().toLocaleDateString('pt-PT')
+            data: new Date().toLocaleDateString('pt-PT'),
+            hora: new Date().toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })
         });
         await registrarLog(`Adicionou ${nome} à Blacklist`);
         alert("🚨 Blacklist Registada!");
@@ -300,15 +286,16 @@ async function adicionarBlacklist() {
         console.error(e); 
     } 
 }
+
 async function removerDaBlacklist(id) {
     // Busca o nome antes de apagar para o log ser preciso
     const doc = await db.collection("blacklist").doc(id).get();
     const nome = doc.exists ? doc.data().nome : "Alguém";
-
-    if (confirm("Desejas remover " + nome + " da Blacklist?")) {
+   
+    if (confirm("Desejas remover da Blacklist?")) {
         try {
             await db.collection("blacklist").doc(id).delete();
-            await registrarLog("Removeu " + nome + " da Blacklist");
+            await registrarLog("Removeu alguém da Blacklist");
             alert("Removido com sucesso!");
         } catch (e) { console.error("Erro ao remover:", e); }
     }
@@ -334,7 +321,7 @@ function renderBlacklist() {
                     <p><strong>ID:</strong> ${data.id}</p>
                     <p><strong>Motivo:</strong> ${data.motivo}</p>
                     <div style="font-size: 12px; color: #aaa; margin-top:10px;">
-                        <span>Por: ${data.autor} | ${data.data} às ${data.hora}</span>
+                        <span>Por: ${data.autor} | ${data.data}</span>
                     </div>
                 </div>`;
         });
@@ -342,7 +329,7 @@ function renderBlacklist() {
 }
 
 /* =========================
-   7. RENDER LOGS (TABELA)
+   7. RENDER LOGS
 ========================= */
 function renderLogs() {
     const logContainer = document.getElementById("logTableBody");
