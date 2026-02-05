@@ -188,7 +188,7 @@
                         <label>Nome do Agente</label>
                         <div class="input-wrapper">
                             <i class="fas fa-signature"></i>
-                            <input type="text" id="nome" placeholder="Ex: Rodrigo Silva" autocomplete="off">
+                            <input type="text" id="nome" placeholder="Nome" autocomplete="off">
                         </div>
                     </div>
                     <div style="display: flex; gap: 15px;">
@@ -203,7 +203,7 @@
                             <label>Patente</label>
                             <div class="input-wrapper">
                                 <i class="fas fa-medal"></i>
-                                <input type="text" id="patente" placeholder="Ex: Comissário" autocomplete="off">
+                                <input type="text" id="patente" placeholder="Cargo" autocomplete="off">
                             </div>
                         </div>
                     </div>
@@ -211,7 +211,7 @@
                         <label>Callsign</label>
                         <div class="input-wrapper">
                             <i class="fas fa-walkie-talkie"></i>
-                            <input type="text" id="callsign" placeholder="Ex: FOX-10" autocomplete="off">
+                            <input type="text" id="callsign" placeholder="CallSign" autocomplete="off">
                         </div>
                     </div>
                     <button type="button" class="btn btn-success" onclick="salvarNovoMembro()">
@@ -221,26 +221,26 @@
             </div>
 
             <div class="card blacklist">
-                <h2 style="color: var(--danger);"><i class="fas fa-ban"></i> Sistema de Sanções</h2>
+                <h2 style="color: var(--danger);"><i class="fas fa-ban"></i> Sistema de Blacklist</h2>
                 <form id="formBlacklist" autocomplete="off">
                     <div class="input-group">
                         <label>Nome do Infrator</label>
                         <div class="input-wrapper">
                             <i class="fas fa-user-xmark"></i>
-                            <input type="text" id="bNome" placeholder="Nome Completo" autocomplete="off">
+                            <input type="text" id="bNome" placeholder="Nome" autocomplete="off">
                         </div>
                     </div>
                     <div class="input-group">
-                        <label>Motivo da Sanção</label>
+                        <label>Motivo da Blacklist</label>
                         <textarea id="bMotivo" placeholder="Descreva detalhadamente a infração cometida..."></textarea>
                     </div>
                     
                     <div class="btn-container">
                         <button type="button" class="btn btn-danger" onclick="adicionarBlacklist()">
-                            <i class="fas fa-gavel"></i> Aplicar Banimento
+                            <i class="fas fa-gavel"></i> Colocar na Blacklist
                         </button>
                         <button type="button" class="btn btn-outline" onclick="window.location.href='blacklist_view.html'">
-                            <i class="fas fa-list-ul"></i> Consultar Lista de Banidos
+                            <i class="fas fa-list-ul"></i> Consultar Blacklist
                         </button>
                     </div>
                 </form>
