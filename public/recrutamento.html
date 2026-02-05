@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recrutamento | PSP Sucesso RP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { font-family: 'Poppins', sans-serif; background-color: #0b0e14; color: #e0e0e0; margin: 0; padding-bottom: 50px; }
+        
+        header { 
+            background: linear-gradient(135deg, #001a4d 0%, #002366 100%); 
+            padding: 30px; text-align: center; border-bottom: 3px solid #ffcc00; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5); 
+        }
+        header h1 { margin: 15px 0 5px 0; letter-spacing: 2px; text-transform: uppercase; font-size: 24px; color: white; }
+        header p { color: #ffcc00; font-weight: 600; margin-bottom: 20px; }
+
+        /* Menu de Navegação */
+        .menu { background: #161b22; padding: 10px; text-align: center; border-bottom: 1px solid #30363d; }
+        .menu a { color: #c9d1d9; text-decoration: none; margin: 0 15px; font-size: 14px; transition: 0.3s; }
+        .menu a:hover { color: #ffcc00; }
+
+        /* Seção de Recrutamento */
+        .recruit-section {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 40px;
+            background: #161b22;
+            border-radius: 15px;
+            border: 1px solid #30363d;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .recruit-section h2 { color: #ffcc00; border-bottom: 2px solid #ffcc00; padding-bottom: 10px; margin-top: 30px; text-align: center; }
+        .recruit-section h3 { color: #58a6ff; margin-top: 25px; font-size: 20px; }
+
+        .recruit-section ul { list-style: none; padding: 0; }
+        .recruit-section li { 
+            background: #0d1117; 
+            margin: 10px 0; 
+            padding: 15px; 
+            border-left: 5px solid #ffcc00; 
+            border-radius: 8px;
+            color: #c9d1d9;
+            line-height: 1.6;
+        }
+
+        .subsection { 
+            margin-top: 25px; 
+            padding: 20px; 
+            background-color: rgba(255,255,255,0.03); 
+            border-radius: 12px; 
+            border: 1px solid #30363d;
+        }
+
+        code { background: #21262d; color: #ff7b72; padding: 2px 6px; border-radius: 4px; font-family: monospace; }
+
+        .note { 
+            background: #21262d; 
+            padding: 20px; 
+            border-radius: 8px; 
+            border-left: 4px solid #ffcc00; 
+            font-style: italic; 
+            color: #ffcc00; 
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 35px;
+            background-color: #ffcc00;
+            color: #0b0e14;
+            font-weight: bold;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+        .back-btn:hover { background-color: #d1a825; transform: scale(1.05); }
+
+        footer { text-align: center; padding: 30px; color: #8b949e; font-size: 13px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Recrutamento | PSP Sucesso RP</h1>
+    <p>Bem-vindo, <span id="loggedUser">Visitante</span></p>
+
+    <nav class="menu">
+        <a href="index.html">Início</a>
+        <a href="blacklist.html">Blacklist</a>
+        <a href="junta-te.html">Junta-te a Nós</a>
+        <a href="hub.html" id="hubLink">Hub</a>
+        <a href="superiores.html" id="superioresLink">Superiores</a>
+        <a href="login.html">Login</a>
+        <a href="#" onclick="logout()" id="logoutBtn" style="display:none;">Logout</a>
+    </nav>
+</header>
+
+<section class="recruit-section">
+    <h2>📝 Como Funciona o Recrutamento</h2>
+    <ul>
+        <li>1️⃣ Abertura de ticket na categoria Recrutamento.</li>
+        <li>2️⃣ Preenchimento das perguntas iniciais em formato de forms.</li>
+        <li>3️⃣ Análise pela equipa responsável.</li>
+        <li>4️⃣ Entrevista.</li>
+        <li>5️⃣ Resultado final comunicado no ticket pela direção ou responsável.</li>
+    </ul>
+
+    <div class="subsection">
+        <h3>📌 Regras para Superiores durante entrevistas</h3>
+        <ul>
+            <li>SUPERIOR deve dar <code>/join</code> no canal das entrevistas para que o bot possa gravar.</li>
+            <li>Ao terminar, encerrar a gravação e sair do canal.</li>
+            <li>A função do responsável por tickets é de comunicar com o candidato e não de avaliar a entrevista ou o forms, ou seja quem avalia é o responsável por recs.</li>
+        </ul>
+    </div>
+
+    <div class="subsection">
+        <h3>📎 Informações Importantes</h3>
+        <p><strong>DIZER ISTO QUANDO O TICKET FOR DE RECRUTAMENTO:</strong></p>
+        <ul>
+            <li>Olá @NOME DELE, tudo bem? Umas informações antes de começarmos.</li>
+            <li>Seja honesto nas respostas.</li>
+            <li>Explique tudo com clareza.</li>
+            <li>O desrespeito às regras resulta em reprovação imediata.</li>
+            <li>O processo pode demorar, pedimos paciência.</li>
+        </ul>
+    </div>
+
+    <div class="subsection">
+        <h3>✅ O que oferecemos</h3>
+        <ul>
+            <li>Estrutura organizada.</li>
+            <li>Ambiente sério e respeitoso.</li>
+            <li>Possibilidade de progressão.</li>
+            <li>Apoio da equipa.</li>
+            <li>Sistema de hierarquia bem definido.</li>
+        </ul>
+    </div>
+
+    <div class="subsection">
+        <h3>🎤 Perguntas da Entrevista</h3>
+        <ul>
+            <li>Apresenta-te brevemente.</li>
+            <li>Porque te candidataste a este recrutamento?</li>
+            <li>O que sabes sobre a nossa corporação?</li>
+            <li>Como lidas com regras e hierarquia?</li>
+            <li>Já tiveste problemas em grupos ou servidores anteriores? Explica.</li>
+            <li>Como reages a ordens com as quais não concordas?</li>
+            <li>Trabalhas melhor sozinho ou em equipa? Porquê?</li>
+            <li>Como ages em situações de conflito?</li>
+            <li>Tens disponibilidade para aprender e evoluir dentro da estrutura?</li>
+            <li>Onde te vês dentro da PSP no futuro?</li>
+            <li>Concorda que se fizeres algo errado serás expulso?</li>
+            <li>Seguirás ordens de superiores mesmo que estejas certo?</li>
+            <li>Se ficas 2 semanas e depois saísse, concordas que irias para a blacklist?</li>
+        </ul>
+    </div>
+
+    <div class="subsection">
+        <h3>✅ Critérios de Seleção</h3>
+        <ul>
+            <li><strong>Disponibilidade:</strong> Cumprir horários, participar ativamente, ser útil à organização.</li>
+            <li><strong>Comportamento:</strong> Respeitar regras, hierarquia e membros, ser maduro e responsável.</li>
+            <li><strong>Comunicação:</strong> Explicar ideias claramente, responder às instruções, boa postura.</li>
+            <li><strong>Experiência e Conhecimento:</strong> Conhecimento prévio em RP, experiência em estruturas similares.</li>
+            <li><strong>Atitude:</strong> Interesse em evoluir, proatividade, disciplina e comprometimento.</li>
+        </ul>
+    </div>
+
+    <div class="subsection">
+        <h3>📌 Requisitos</h3>
+        <ul>
+            <li>Ter maturidade e respeito.</li>
+            <li>Saber comunicar de forma clara.</li>
+            <li>Seguir regras e hierarquia.</li>
+            <li>Ter disponibilidade para participar.</li>
+            <li>Não possuir histórico de problemas internos.</li>
+        </ul>
+    </div>
+
+    <p class="note">O responsável por recrutamento avalia e comunica apenas a decisão final ao responsável por tickets que este irá comunicar aos candidatos!</p>
+
+    <div style="text-align:center;">
+        <a href="superiores.html" class="back-btn">Voltar</a>
+    </div>
+</section>
+
+<footer>
+    © 2026 PSP - Sucesso RP - TomasPlayBR
+</footer>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
