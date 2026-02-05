@@ -129,22 +129,23 @@ function filtrarHub() {
 }
 
 /* =========================
-   5. HUB (DATABASE)
+    5. HUB (DATABASE)
 ========================= */
 function renderHub() {
     const tableBody = document.querySelector("#hubTable tbody");
     const totalAgentes = document.getElementById("totalAgentes");
     if (!tableBody) return;
 
-    db.collection("membros").onSnapshot((snapshot) => {
+    // Ordenamos por "ordem" para o Drag & Drop funcionar
+    db.collection("membros").orderBy("ordem", "asc").onSnapshot((snapshot) => {
         tableBody.innerHTML = "";
         if (totalAgentes) totalAgentes.innerText = snapshot.size;
-snapshot.forEach((doc) => {
+
+        snapshot.forEach((doc) => {
             const item = doc.data();
             const docId = doc.id;
             const isDiretor = currentUser && currentUser.role === "Diretor Nacional";
 
-            // Define se mostra os botões ou apenas um traço
             const botoesAcao = isDiretor 
                 ? `<td>
                     <button onclick="editarMembro('${docId}')" style="background:none; border:none; cursor:pointer; font-size:18px;" title="Editar">📝</button>
@@ -152,9 +153,10 @@ snapshot.forEach((doc) => {
                    </td>`
                 : "<td>-</td>";
 
-            // Monta a linha da tabela (Tr)
+            // Monta apenas UMA linha com o handle de arrastar (☰)
             tableBody.innerHTML += `
-                <tr>
+                <tr data-id="${docId}">
+                    <td class="drag-handle" style="cursor: grab; text-align: center;">☰</td>
                     <td>${item.nome}</td>
                     <td>${item.idAgente || item.id || "N/A"}</td>
                     <td>${item.discord || "N/A"}</td>
@@ -164,19 +166,41 @@ snapshot.forEach((doc) => {
                     <td>${item.dataEntrada || "N/A"}</td>
                     ${botoesAcao}
                 </tr>`;
-            tableBody.innerHTML += `
-                <tr data-id="${docId}">
-                    <td class="drag-handle" style="cursor: grab;">☰</td> <td>${item.nome}</td>
-                    <td>${item.idAgente || item.id}</td>
-                  <td style="color: #ffcc00; font-weight: bold;">${item.patente}</td>
-                  ${botoesAcao}
-                </tr>`;
-         });
-    }); // FECHA O snapshot
-} // FECHA O renderHub
+        });
+
+        // Ativa o movimento após carregar os dados
+        ativarDragAndDrop();
+    });
+}
+
+function ativarDragAndDrop() {
+    const el = document.querySelector("#hubTable tbody");
+    if (!el || typeof Sortable === 'undefined') return;
+
+    Sortable.create(el, {
+        handle: '.drag-handle',
+        animation: 150,
+        onEnd: async function () {
+            const linhas = el.querySelectorAll('tr');
+            const batch = db.batch(); // Usar batch é mais rápido e seguro
+            
+            linhas.forEach((linha, index) => {
+                const id = linha.getAttribute('data-id');
+                const ref = db.collection("membros").doc(id);
+                batch.update(ref, { ordem: index });
+            });
+
+            try {
+                await batch.commit();
+                console.log("Ordem atualizada com sucesso!");
+            } catch (e) {
+                console.error("Erro ao salvar ordem:", e);
+            }
+        }
+    });
+}
 
 async function salvarNovoMembro() {
-    // 1. Captura os elementos primeiro
     const elNome = document.getElementById("nome");
     const elId = document.getElementById("idAgente");
     const elPatente = document.getElementById("patente");
@@ -184,24 +208,19 @@ async function salvarNovoMembro() {
     const elCallsign = document.getElementById("callsign");
     const elData = document.getElementById("dataEntrada");
 
-    // 2. Verifica se os campos básicos existem no HTML
-    if (!elNome || !elId || !elPatente) {
-        console.error("Erro: Alguns campos (nome, idAgente ou patente) não foram encontrados no HTML.");
-        alert("Erro técnico: IDs do formulário incorretos.");
-        return;
-    }
+    if (!elNome || !elId || !elPatente) return;
 
-    // 3. Extrai os valores
     const nome = elNome.value.trim();
     const idAgente = elId.value.trim();
     const patente = elPatente.value;
 
     if (!nome || !idAgente || !patente) {
-        alert("Por favor, preenche todos os campos obrigatórios!");
+        alert("Preenche os campos obrigatórios!");
         return;
     }
 
     try {
+        // Ao salvar novo, pomos no fim da lista (ordem alta)
         await db.collection("membros").add({
             nome: nome,
             idAgente: idAgente,
@@ -209,26 +228,22 @@ async function salvarNovoMembro() {
             discord: elDiscord ? elDiscord.value : "N/A",
             callsign: elCallsign ? elCallsign.value : "N/A",
             dataEntrada: elData && elData.value ? elData.value : new Date().toLocaleDateString('pt-PT'),
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-
-           
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            ordem: 999 
         });
 
         await registrarLog("Registou novo membro: " + nome);
         alert("✅ Agente Registado!");
-        
-        // Limpa o formulário se o elemento existir
         const form = document.getElementById("formRegisto");
         if (form) form.reset();
-        
     } catch (e) {
-        console.error("Erro ao salvar:", e);
-        alert("Erro ao salvar na base de dados.");
+        alert("Erro ao salvar.");
     }
 }
+
 async function editarMembro(id) {
     const novoNome = prompt("Nome completo:");
-    const novaPatente = prompt("Patente (ex: 01 - Diretor):");
+    const novaPatente = prompt("Patente:");
     const novoId = prompt("ID/Passaporte:");
 
     if (novoNome && novaPatente && novoId) {
@@ -240,12 +255,10 @@ async function editarMembro(id) {
             });
             alert("✅ Atualizado!");
         } catch (e) {
-            console.error("Erro ao editar:", e);
             alert("Erro ao atualizar.");
         }
     }
 }
-
 /* =========================
    6. BLACKLIST
 ========================= */
