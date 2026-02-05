@@ -4,203 +4,251 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PSP | Terminal de Comando</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #05070a;
-            --sidebar: #0a0e14;
-            --card: #121821;
-            --accent: #007bff;
-            --accent-hover: #0056b3;
-            --danger: #ff4d4d;
-            --success: #28a745;
-            --border: #1f2937;
-            --text-primary: #ffffff;
+            --bg: #0b0f19;
+            --sidebar: #111827;
+            --card: rgba(31, 41, 55, 0.7);
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --danger: #ef4444;
+            --success: #10b981;
+            --border: rgba(255, 255, 255, 0.1);
+            --text-primary: #f9fafb;
             --text-secondary: #9ca3af;
         }
 
         body {
             margin: 0;
             font-family: 'Inter', sans-serif;
-            background: var(--bg);
+            background: radial-gradient(circle at top right, #1e293b, #0b0f19);
             color: var(--text-primary);
             display: flex;
             min-height: 100vh;
         }
 
-        /* Barra Lateral (Menu) */
+        /* BARRA LATERAL */
         .sidebar {
-            width: 240px;
+            width: 260px;
             background: var(--sidebar);
             border-right: 1px solid var(--border);
-            padding: 20px;
+            padding: 30px 20px;
             display: flex;
             flex-direction: column;
+            backdrop-filter: blur(10px);
         }
 
-        .sidebar h2 { font-size: 1.2rem; color: var(--accent); margin-bottom: 30px; }
+        .sidebar-brand {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 40px;
+        }
 
         .nav-link {
             color: var(--text-secondary);
             text-decoration: none;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            transition: 0.3s;
+            padding: 14px 18px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            font-weight: 600;
         }
 
-        .nav-link:hover { background: var(--border); color: white; }
+        .nav-link:hover, .nav-link.active {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--accent);
+        }
 
-        /* Conteúdo Principal */
-        .main-content { flex: 1; padding: 40px; overflow-y: auto; }
+        /* CONTEÚDO PRINCIPAL */
+        .main-content { flex: 1; padding: 50px; overflow-y: auto; }
 
-        .header-section { margin-bottom: 30px; }
-        .header-section h1 { margin: 0; font-size: 2rem; font-weight: 800; }
+        .header-section { margin-bottom: 40px; }
+        .header-section h1 { font-size: 2.5rem; font-weight: 800; margin: 0; background: linear-gradient(to right, #fff, #60a5fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 30px;
         }
 
         .card {
             background: var(--card);
+            backdrop-filter: blur(12px);
             border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border-radius: 24px;
+            padding: 35px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
         }
 
-        .card h2 {
-            margin-top: 0;
-            font-size: 1.3rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 15px;
-            margin-bottom: 20px;
+        .card:hover { transform: translateY(-5px); }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
         }
 
-        /* Inputs Estilizados */
-        .input-group { margin-bottom: 20px; }
-        label {
-            display: block;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            color: var(--text-secondary);
-            margin-bottom: 8px;
-            letter-spacing: 1px;
-            font-weight: 600;
-        }
+        .card.registo::before { background: var(--success); }
+        .card.blacklist::before { background: var(--danger); }
+
+        .card h2 { margin: 0 0 25px 0; font-size: 1.4rem; display: flex; align-items: center; gap: 12px; }
+
+        /* FORMULÁRIO */
+        .input-group { margin-bottom: 22px; }
+        label { display: block; font-size: 0.7rem; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 8px; letter-spacing: 1.5px; font-weight: 700; }
+
+        .input-wrapper { position: relative; }
+        .input-wrapper i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); }
 
         input, textarea {
             width: 100%;
-            padding: 12px 16px;
-            background: #080a0f;
+            padding: 14px 15px 14px 45px;
+            background: rgba(0, 0, 0, 0.2);
             border: 1px solid var(--border);
-            border-radius: 8px;
+            border-radius: 12px;
             color: white;
             font-size: 0.95rem;
             box-sizing: border-box;
-            transition: 0.2s;
+            transition: 0.3s;
         }
 
-        input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2); }
+        input:focus { border-color: var(--accent); outline: none; background: rgba(0, 0, 0, 0.4); box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15); }
 
-        /* Botões */
+        /* BOTÕES */
+        .btn-container { display: flex; flex-direction: column; gap: 12px; }
+
         .btn {
             width: 100%;
-            padding: 14px;
+            padding: 16px;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             font-weight: 700;
             cursor: pointer;
-            transition: 0.3s;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
             text-transform: uppercase;
-            font-size: 0.85rem;
+            letter-spacing: 1px;
         }
 
-        .btn-success { background: var(--success); color: white; }
-        .btn-success:hover { background: #218838; transform: translateY(-2px); }
+        .btn-success { background: var(--success); color: white; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); }
+        .btn-success:hover { background: #059669; filter: brightness(1.1); }
 
-        .btn-danger { background: var(--danger); color: white; }
-        .btn-danger:hover { background: #c82333; transform: translateY(-2px); }
+        .btn-danger { background: var(--danger); color: white; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3); }
+        .btn-danger:hover { background: #dc2626; }
 
-        textarea { height: 100px; resize: none; }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+        .btn-outline:hover { background: var(--border); }
+
+        textarea { height: 110px; padding-left: 15px; }
     </style>
 </head>
 <body>
 
     <div class="sidebar">
-        <h2>POLÍCIA PSP</h2>
-        <a href="superiores.html" class="nav-link">🏠 Início</a>
-        <a href="hub.html" class="nav-link">👥 Lista de Efetivos</a>
-        <a href="#" class="nav-link" style="color: var(--accent); background: #161b22;">🛠️ Gestão</a>
+        <div class="sidebar-brand">
+            <i class="fas fa-shield-halved"></i>
+            <span>POLÍCIA PSP</span>
+        </div>
+        <a href="superiores.html" class="nav-link"><i class="fas fa-home"></i> Início</a>
+        <a href="hub.html" class="nav-link"><i class="fas fa-users"></i> Lista de Efetivos</a>
+        <a href="#" class="nav-link active"><i class="fas fa-cog"></i> Gestão</a>
+        
+        <a href="blacklist_view.html" class="nav-link"><i class="fas fa-user-slash"></i> Ver Blacklist</a>
     </div>
 
     <div class="main-content">
         <div class="header-section">
             <h1>Terminal de Gestão</h1>
-            <p style="color: var(--text-secondary);">Controlo de base de dados e sanções.</p>
+            <p style="color: var(--text-secondary); font-size: 1.1rem;">Controlo centralizado de agentes e sanções disciplinares.</p>
         </div>
 
         <div class="grid">
-            <div class="card">
-                <h2 style="color: var(--success);">👤 Registo de Efetivo</h2>
+            <div class="card registo">
+                <h2 style="color: var(--success);"><i class="fas fa-user-plus"></i> Novo Agente</h2>
                 <form id="formRegisto" autocomplete="off">
                     <div class="input-group">
                         <label>Nome do Agente</label>
-                        <input type="text" id="nome" placeholder="Nome Completo" autocomplete="off">
+                        <div class="input-wrapper">
+                            <i class="fas fa-signature"></i>
+                            <input type="text" id="nome" placeholder="Ex: Rodrigo Silva" autocomplete="off">
+                        </div>
                     </div>
                     <div style="display: flex; gap: 15px;">
                         <div class="input-group" style="flex: 1;">
-                            <label>ID</label>
-                            <input type="text" id="idAgente" placeholder="ID" autocomplete="off">
+                            <label>ID Passaporte</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-id-card"></i>
+                                <input type="text" id="idAgente" placeholder="ID" autocomplete="off">
+                            </div>
                         </div>
                         <div class="input-group" style="flex: 1;">
                             <label>Patente</label>
-                            <input type="text" id="patente" placeholder="Ex: Comissário" autocomplete="off">
+                            <div class="input-wrapper">
+                                <i class="fas fa-medal"></i>
+                                <input type="text" id="patente" placeholder="Ex: Comissário" autocomplete="off">
+                            </div>
                         </div>
                     </div>
                     <div class="input-group">
-                        <label>Discord Tag</label>
-                        <input type="text" id="discord" placeholder="user#0000" autocomplete="off">
-                    </div>
-                    <div class="input-group">
                         <label>Callsign</label>
-                        <input type="text" id="callsign" placeholder="Ex: FOX-10" autocomplete="off">
+                        <div class="input-wrapper">
+                            <i class="fas fa-walkie-talkie"></i>
+                            <input type="text" id="callsign" placeholder="Ex: FOX-10" autocomplete="off">
+                        </div>
                     </div>
-                    <button type="button" class="btn btn-success" onclick="salvarNovoMembro()">Finalizar Registo</button>
+                    <button type="button" class="btn btn-success" onclick="salvarNovoMembro()">
+                        <i class="fas fa-check-circle"></i> Finalizar Registo
+                    </button>
                 </form>
             </div>
 
-            <div class="card">
-                <h2 style="color: var(--danger);">🚫 Sistema de Blacklist</h2>
+            <div class="card blacklist">
+                <h2 style="color: var(--danger);"><i class="fas fa-ban"></i> Sistema de Sanções</h2>
                 <form id="formBlacklist" autocomplete="off">
                     <div class="input-group">
                         <label>Nome do Infrator</label>
-                        <input type="text" id="bNome" placeholder="Nome Completo" autocomplete="off">
+                        <div class="input-wrapper">
+                            <i class="fas fa-user-xmark"></i>
+                            <input type="text" id="bNome" placeholder="Nome Completo" autocomplete="off">
+                        </div>
                     </div>
                     <div class="input-group">
-                        <label>ID / Passaporte</label>
-                        <input type="text" id="bID" placeholder="ID" autocomplete="off">
+                        <label>Motivo da Sanção</label>
+                        <textarea id="bMotivo" placeholder="Descreva detalhadamente a infração cometida..."></textarea>
                     </div>
-                    <div class="input-group">
-                        <label>Motivo</label>
-                        <textarea id="bMotivo" placeholder="Descreva a infração..."></textarea>
+                    
+                    <div class="btn-container">
+                        <button type="button" class="btn btn-danger" onclick="adicionarBlacklist()">
+                            <i class="fas fa-gavel"></i> Aplicar Banimento
+                        </button>
+                        <button type="button" class="btn btn-outline" onclick="window.location.href='blacklist_view.html'">
+                            <i class="fas fa-list-ul"></i> Consultar Lista de Banidos
+                        </button>
                     </div>
-                    <button type="button" class="btn btn-danger" onclick="adicionarBlacklist()">Aplicar Banimento</button>
                 </form>
             </div>
         </div>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <script src="script.js"></script>
 </body>
