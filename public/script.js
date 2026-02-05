@@ -156,18 +156,18 @@ function renderHub() {
                 : "<td>-</td>";
 
             tableBody.innerHTML += `
-                <tr data-id="${docId}">
-                    <td class="drag-handle" style="cursor: grab; text-align: center;">☰</td>
-                    <td>${item.nome}</td>
-                    <td>${item.idAgente || item.id || "N/A"}</td>
-                    <td>${item.discord || "N/A"}</td>
-                    <td style="color: #ffcc00; font-weight: bold;">${item.patente || item.cargo || "N/A"}</td>
-                    <td>${item.callsign || "N/A"}</td>
-                    <td>${item.cursos || "Nenhum"}</td>
-                    <td>${item.dataEntrada || "N/A"}</td>
-                    ${botoesAcao}
-                </tr>`;
-        });
+    <tr data-id="${docId}">
+        <td class="drag-handle" style="cursor: grab; text-align: center;">☰</td>
+        <td>${item.nome}</td>
+        <td>${item.idAgente || item.id || "N/A"}</td>
+        <td>${item.discord || "N/A"}</td>
+        <td style="color: #ffcc00; font-weight: bold;">${item.patente || item.cargo || "N/A"}</td>
+        <td>${item.callsign || "N/A"}</td>
+        <td>${item.cursos || "Nenhum"}</td>
+        <td>${item.dataEntrada || "N/A"}</td>
+        ${botoesAcao}
+    </tr>`;
+   });
 
         ativarDragAndDrop();
     });
