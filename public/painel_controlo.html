@@ -221,26 +221,35 @@
             </div>
 
             <div class="card blacklist">
-                <h2 style="color: var(--danger);"><i class="fas fa-ban"></i> Sistema de Blacklist</h2>
-                <form id="formBlacklist" autocomplete="off">
-                    <div class="input-group">
-                        <label>Nome do Infrator</label>
-                        <div class="input-wrapper">
-                            <i class="fas fa-user-xmark"></i>
-                            <input type="text" id="bNome" placeholder="Nome" autocomplete="off">
-                        </div>
-                    </div>
-                    <div class="input-group">
-                        <label>Motivo da Blacklist</label>
-                        <textarea id="bMotivo" placeholder="Descreva detalhadamente a infração cometida..."></textarea>
-                    </div>
-                    
-                    <div class="btn-container">
-                        <button type="button" class="btn btn-danger" onclick="adicionarBlacklist()">
-                            <i class="fas fa-gavel"></i> Colocar na Blacklist
-                        </button>
-                        <button type="button" class="btn btn-outline" onclick="window.location.href='blacklist.html'">
-                            <i class="fas fa-list-ul"></i> Consultar Blacklist
+    <h2 style="color: var(--danger);"><i class="fas fa-ban"></i> Sistema de Blacklist</h2>
+    <form id="formBlacklist" autocomplete="off">
+        <div class="input-group">
+            <label>Nome do Infrator</label>
+            <div class="input-wrapper">
+                <i class="fas fa-user-xmark"></i>
+                <input type="text" id="bNome" placeholder="Nome" autocomplete="off">
+            </div>
+        </div>
+        
+        <div class="input-group">
+            <label>ID / Passaporte</label>
+            <div class="input-wrapper">
+                <i class="fas fa-id-card"></i>
+                <input type="text" id="bID" placeholder="ID do Infrator" autocomplete="off">
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label>Motivo da Blacklist</label>
+            <textarea id="bMotivo" placeholder="Descreva detalhadamente a infração cometida..."></textarea>
+        </div>
+        
+                     <div class="btn-container">
+                             <button type="button" class="btn btn-danger" onclick="adicionarBlacklist()">
+                             <i class="fas fa-gavel"></i> Colocar na Blacklist
+                             </button>
+                             <button type="button" class="btn btn-outline" onclick="window.location.href='blacklist.html'">
+                             <i class="fas fa-list-ul"></i> Consultar Blacklist
                         </button>
                     </div>
                 </form>
