@@ -214,10 +214,13 @@ async function salvarNovoMembro() {
 
     if (!fields.nome || !fields.id || !fields.patente) return;
 
-    const nome = document.getElementById('nome').value;
-    const idAgente = document.getElementById('idAgente').value;
-    const patente = document.getElementById('patente').value;
-    const callsign = document.getElementById('callsign').value;
+    // Capturamos os elementos do DOM
+    const inputNome = document.getElementById("nome");
+    const inputId = document.getElementById("idAgente");
+    const inputPatente = document.getElementById("patente");
+    const inputDiscord = document.getElementById("discord");
+    const inputCallsign = document.getElementById("callsign");
+    const inputData = document.getElementById("dataEntrada");
 
     if (!nome || !idAgente || !patente) {
         alert("Preenche os campos obrigatórios!");
@@ -225,25 +228,26 @@ async function salvarNovoMembro() {
     }
 
     try {
+        // Objeto a enviar para o Firestore
         await db.collection("membros").add({
-            nome: nome,
-            idAgente: idAgente,
-            patente: patente,
-            discord: fields.discord ? fields.discord.value : "N/A",
-            callsign: fields.callsign ? fields.callsign.value : "N/A",
-            dataEntrada: fields.data && fields.data.value ? fields.data.value : new Date().toLocaleDateString('pt-PT'),
+            nome: inputNome.value.trim(),
+            idAgente: inputId.value.trim(),
+            patente: inputPatente.value.trim(),
+            discord: inputDiscord ? inputDiscord.value : "N/A",
+            callsign: inputCallsign ? inputCallsign.value : "N/A",
+            dataEntrada: (inputData && inputData.value) ? inputData.value : new Date().toLocaleDateString('pt-PT'),
             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
             ordem: 999 
         });
 
-        if (typeof registrarLog === 'function') await registrarLog("Registou novo membro: " + nome);
+        if (typeof registrarLog === 'function') await registrarLog("Registou novo membro: " + inputNome.value);
         alert("✅ Agente registado com sucesso!");
         document.getElementById('formRegisto').reset();
         const form = document.getElementById("formRegisto");
         if (form) form.reset();
     } catch (error) {
         console.error("Erro ao salvar:", error);
-        alert("Erro ao salvar. Verifica a consola.");
+        alert("Erro ao salvar: " + error.message);
     }
 }
 
@@ -285,14 +289,17 @@ async function removerMembro(id, nome) {
    6. BLACKLIST
 ========================= */
 async function adicionarBlacklist() {
-    const nome = document.getElementById("bNome")?.value;
+    cconst nome = document.getElementById("bNome")?.value;
+    const bID = document.getElementById("bID")?.value;
     const motivo = document.getElementById("bMotivo")?.value;
-    if (!nome || !motivo) { alert("Preenche Nome e Motivo!"); return; }
-
+    if (!nome || !motivo || !bID) { 
+        alert("Preenche Nome, ID e Motivo!"); 
+        return;
+       
     try {
         await db.collection("blacklist").add({
             nome: nome,
-            id: document.getElementById("bID")?.value || "N/A",
+            id: bID,
             motivo: motivo,
             autor: currentUser ? currentUser.username : "Desconhecido",
             data: new Date().toLocaleDateString('pt-PT'),
@@ -302,8 +309,8 @@ async function adicionarBlacklist() {
         await registrarLog(`Adicionou ${nome} à Blacklist`);
         alert("🚨 Blacklist Registada!");
         window.location.href = "blacklist.html";
-    } catch (e) { alert("Erro ao gravar!"); }
-}
+    } catch (e) { alert("Erro ao gravar Blacklist!"); 
+    }
 
 async function removerDaBlacklist(id) {
     // Busca o nome antes de apagar para o log ser preciso
