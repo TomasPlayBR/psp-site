@@ -3,167 +3,205 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terminal de Gestão - PSP</title>
+    <title>PSP | Terminal de Comando</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        /* Cores Estilo Dark Mode Tático */
-        :root { 
-            --bg: #0d1117; 
-            --card: #161b22; 
-            --border: #30363d;
-            --blue: #238636; /* Verde para Registo */
-            --red: #da3633; /* Vermelho para Blacklist */
-            --text-main: #f0f6fc;
-            --text-sub: #8b949e;
-            --accent: #58a6ff;
+        :root {
+            --bg: #05070a;
+            --sidebar: #0a0e14;
+            --card: #121821;
+            --accent: #007bff;
+            --accent-hover: #0056b3;
+            --danger: #ff4d4d;
+            --success: #28a745;
+            --border: #1f2937;
+            --text-primary: #ffffff;
+            --text-secondary: #9ca3af;
         }
 
-        body { 
-            background: var(--bg); 
-            color: var(--text-main); 
-            font-family: 'Segoe UI', Roboto, Helvetica, sans-serif; 
-            margin: 0; 
-            padding: 40px 20px;
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
             display: flex;
-            justify-content: center;
+            min-height: 100vh;
         }
 
-        .container { width: 100%; max-width: 1100px; }
+        /* Barra Lateral (Menu) */
+        .sidebar {
+            width: 240px;
+            background: var(--sidebar);
+            border-right: 1px solid var(--border);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
 
-        /* Cabeçalho */
-        header { text-align: center; margin-bottom: 40px; }
-        h1 { font-size: 28px; letter-spacing: 1px; margin-bottom: 10px; }
-        .back-link { 
-            color: var(--accent); 
-            text-decoration: none; 
-            font-size: 14px; 
+        .sidebar h2 { font-size: 1.2rem; color: var(--accent); margin-bottom: 30px; }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
             transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-link:hover { background: var(--border); color: white; }
+
+        /* Conteúdo Principal */
+        .main-content { flex: 1; padding: 40px; overflow-y: auto; }
+
+        .header-section { margin-bottom: 30px; }
+        .header-section h1 { margin: 0; font-size: 2rem; font-weight: 800; }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: var(--card);
             border: 1px solid var(--border);
-            padding: 8px 15px;
-            border-radius: 6px;
-        }
-        .back-link:hover { background: var(--border); }
-
-        /* Grid de Cartões */
-        .grid { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 30px; 
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        .card { 
-            background: var(--card); 
-            padding: 30px; 
-            border-radius: 12px; 
-            border: 1px solid var(--border);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        .card h2 {
+            margin-top: 0;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
         }
 
-        h2 { 
-            font-size: 18px; 
-            margin-top: 0; 
-            margin-bottom: 25px; 
-            text-align: left;
-            border-left: 4px solid var(--accent);
-            padding-left: 15px;
-            text-transform: uppercase;
-        }
-
-        /* Inputs Modernos */
-        .input-group { margin-bottom: 20px; position: relative; }
-        
-        label { 
-            font-size: 11px; 
-            color: var(--text-sub); 
-            margin-bottom: 8px; 
+        /* Inputs Estilizados */
+        .input-group { margin-bottom: 20px; }
+        label {
             display: block;
-            font-weight: bold;
+            font-size: 0.75rem;
             text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+            font-weight: 600;
         }
 
-        input, textarea { 
-            width: 100%; 
-            background: #0d1117; 
-            border: 1px solid var(--border); 
-            color: white; 
-            padding: 12px 15px; 
-            border-radius: 6px; 
-            font-size: 14px;
+        input, textarea {
+            width: 100%;
+            padding: 12px 16px;
+            background: #080a0f;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: white;
+            font-size: 0.95rem;
             box-sizing: border-box;
-            transition: all 0.2s ease;
+            transition: 0.2s;
         }
 
-        input:focus, textarea:focus { 
-            outline: none; 
-            border-color: var(--accent); 
-            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.1);
-        }
+        input:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2); }
 
         /* Botões */
-        button { 
-            width: 100%; 
-            padding: 15px; 
-            border: none; 
-            border-radius: 6px; 
-            cursor: pointer; 
-            font-weight: bold; 
-            font-size: 14px;
-            text-transform: uppercase;
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
             transition: 0.3s;
-            margin-top: 10px;
+            text-transform: uppercase;
+            font-size: 0.85rem;
         }
 
-        .btn-blue { background: var(--blue); color: white; }
-        .btn-blue:hover { background: #2ea043; transform: translateY(-2px); }
+        .btn-success { background: var(--success); color: white; }
+        .btn-success:hover { background: #218838; transform: translateY(-2px); }
 
-        .btn-red { background: var(--red); color: white; }
-        .btn-red:hover { background: #f85149; transform: translateY(-2px); }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-danger:hover { background: #c82333; transform: translateY(-2px); }
 
-        .full { grid-column: span 1; }
-        textarea { height: 120px; resize: none; }
-
-        @media (max-width: 850px) { .grid { grid-template-columns: 1fr; } }
+        textarea { height: 100px; resize: none; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🛠️ Terminal de Gestão de Dados</h1>
-            <a href="superiores.html" class="back-link">← Voltar ao Sistema</a>
-        </header>
+
+    <div class="sidebar">
+        <h2>POLÍCIA PSP</h2>
+        <a href="superiores.html" class="nav-link">🏠 Início</a>
+        <a href="hub.html" class="nav-link">👥 Lista de Efetivos</a>
+        <a href="#" class="nav-link" style="color: var(--accent); background: #161b22;">🛠️ Gestão</a>
+    </div>
+
+    <div class="main-content">
+        <div class="header-section">
+            <h1>Terminal de Gestão</h1>
+            <p style="color: var(--text-secondary);">Controlo de base de dados e sanções.</p>
+        </div>
 
         <div class="grid">
             <div class="card">
-                <h2>👥 Registo de Efetivo</h2>
-                <form autocomplete="off">
+                <h2 style="color: var(--success);">👤 Registo de Efetivo</h2>
+                <form id="formRegisto" autocomplete="off">
                     <div class="input-group">
-                        <label>Nome Completo</label>
-                        <input type="text" id="nome" placeholder="Ex: Rodrigo Silva" autocomplete="off">
+                        <label>Nome do Agente</label>
+                        <input type="text" id="nome" placeholder="Nome Completo" autocomplete="off">
                     </div>
-                    <div class="grid-mini" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                        <div class="input-group">
-                            <label>ID / Passaporte</label>
-                            <input type="text" id="idAgente" placeholder="Ex: 102" autocomplete="off">
+                    <div style="display: flex; gap: 15px;">
+                        <div class="input-group" style="flex: 1;">
+                            <label>ID</label>
+                            <input type="text" id="idAgente" placeholder="ID" autocomplete="off">
                         </div>
-                        <div class="input-group">
-                            <label>Cargo / Patente</label>
-                            <input type="text" id="patente" placeholder="Ex: Agente" autocomplete="off">
+                        <div class="input-group" style="flex: 1;">
+                            <label>Patente</label>
+                            <input type="text" id="patente" placeholder="Ex: Comissário" autocomplete="off">
                         </div>
-                    </div>
-                    <div class="input-group">
-                        <label>Callsign</label>
-                        <input type="text" id="callsign" placeholder="Ex: FOX-2" autocomplete="off">
                     </div>
                     <div class="input-group">
                         <label>Discord Tag</label>
-                        <input type="text" id="discord" placeholder="Ex: nick#0000" autocomplete="off">
+                        <input type="text" id="discord" placeholder="user#0000" autocomplete="off">
                     </div>
                     <div class="input-group">
-                        <label>Data de Entrada</label>
-                        <input type="date" id="dataEntrada">
+                        <label>Callsign</label>
+                        <input type="text" id="callsign" placeholder="Ex: FOX-10" autocomplete="off">
                     </div>
-                    <button type="button" class="btn-blue" onclick="salvarNovoMembro()">Finalizar Registo</button>
+                    <button type="button" class="btn btn-success" onclick="salvarNovoMembro()">Finalizar Registo</button>
                 </form>
             </div>
 
             <div class="card">
-                <h2>
+                <h2 style="color: var(--danger);">🚫 Sistema de Blacklist</h2>
+                <form id="formBlacklist" autocomplete="off">
+                    <div class="input-group">
+                        <label>Nome do Infrator</label>
+                        <input type="text" id="bNome" placeholder="Nome Completo" autocomplete="off">
+                    </div>
+                    <div class="input-group">
+                        <label>ID / Passaporte</label>
+                        <input type="text" id="bID" placeholder="ID" autocomplete="off">
+                    </div>
+                    <div class="input-group">
+                        <label>Motivo</label>
+                        <textarea id="bMotivo" placeholder="Descreva a infração..."></textarea>
+                    </div>
+                    <button type="button" class="btn btn-danger" onclick="adicionarBlacklist()">Aplicar Banimento</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
