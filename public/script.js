@@ -214,9 +214,10 @@ async function salvarNovoMembro() {
 
     if (!fields.nome || !fields.id || !fields.patente) return;
 
-    const nome = fields.nome.value.trim();
-    const idAgente = fields.id.value.trim();
-    const patente = fields.patente.value;
+    const nome = document.getElementById('nome').value;
+    const idAgente = document.getElementById('idAgente').value;
+    const patente = document.getElementById('patente').value;
+    const callsign = document.getElementById('callsign').value;
 
     if (!nome || !idAgente || !patente) {
         alert("Preenche os campos obrigatórios!");
@@ -236,12 +237,13 @@ async function salvarNovoMembro() {
         });
 
         if (typeof registrarLog === 'function') await registrarLog("Registou novo membro: " + nome);
-        alert("✅ Agente Registado!");
+        alert("✅ Agente registado com sucesso!");
+        document.getElementById('formRegisto').reset();
         const form = document.getElementById("formRegisto");
         if (form) form.reset();
-    } catch (e) {
-        console.error(e);
-        alert("Erro ao salvar.");
+    } catch (error) {
+        console.error("Erro ao salvar:", error);
+        alert("Erro ao salvar. Verifica a consola.");
     }
 }
 
