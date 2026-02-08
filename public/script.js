@@ -196,34 +196,51 @@ function ativarDragAndDrop() {
 }
 
 async function salvarNovoMembro() {
-    const nome = document.getElementById("nome").value;
-    const idAgente = document.getElementById("idAgente").value;
-    const patente = document.getElementById("patente").value;
-    const discord = document.getElementById("discord").value || "N/A";
-    const callsign = document.getElementById("callsign").value || "N/A";
-    const dataInp = document.getElementById("dataEntrada").value;
+    // 1. Capturar os elementos do HTML primeiro
+    const inputNome = document.getElementById("nome");
+    const inputId = document.getElementById("idAgente");
+    const inputPatente = document.getElementById("patente");
+    const inputDiscord = document.getElementById("discord");
+    const inputCallsign = document.getElementById("callsign");
+    const inputData = document.getElementById("dataEntrada");
 
-    if (!nome || !idAgente || !patente) return alert("Preenche os campos!");
+    // 2. Verificar se os campos obrigatórios existem e têm valor
+    if (!inputNome || !inputId || !inputPatente) {
+        alert("Erro: Campos do formulário não encontrados!");
+        return;
+    }
 
+    const nomeVal = inputNome.value.trim();
+    const idVal = inputId.value.trim();
+    const patenteVal = inputPatente.value.trim();
 
-    if (!inputNome.value || !inputId.value || !inputPatente.value) return alert("Preenche os campos obrigatórios!");
+    if (!nomeVal || !idVal || !patenteVal) {
+        alert("Preenche os campos obrigatórios: Nome, ID e Patente!");
+        return;
+    }
 
     try {
+        // 3. Enviar para o Firestore
         await db.collection("membros").add({
-            nome: inputNome.value.trim(),
-            idAgente: inputId.value.trim(),
-            patente: inputPatente.value.trim(),
+            nome: nomeVal,
+            idAgente: idVal,
+            patente: patenteVal,
             discord: inputDiscord ? inputDiscord.value : "N/A",
             callsign: inputCallsign ? inputCallsign.value : "N/A",
-            dataEntrada: inputData.value || new Date().toLocaleDateString('pt-PT'),
+            dataEntrada: (inputData && inputData.value) ? inputData.value : new Date().toLocaleDateString('pt-PT'),
             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
             ordem: 999 
         });
 
-        await registrarLog("Registou novo membro: " + inputNome.value);
+        await registrarLog("Registou novo membro: " + nomeVal);
         alert("✅ Agente registado com sucesso!");
-        document.getElementById("formRegisto").reset();
+        
+        // Limpar o formulário
+        const form = document.getElementById("formRegisto");
+        if (form) form.reset();
+
     } catch (error) {
+        console.error("Erro ao salvar:", error);
         alert("Erro ao salvar: " + error.message);
     }
 }
