@@ -280,28 +280,50 @@ async function removerMembro(id, nome) {
    6. BLACKLIST
 ========================= */
 async function adicionarBlacklist() {
-    const nome = document.getElementById("bNome")?.value;
-    const bID = document.getElementById("bID")?.value;
-    const motivo = document.getElementById("bMotivo")?.value;
+    const inputNome = document.getElementById("bNome");
+    const inputID = document.getElementById("bID");
+    const inputMotivo = document.getElementById("bMotivo");
+    const inputNivel = document.getElementById("bNivel"); // Novo campo de nível
 
-    if (!nome || !motivo || !bID) return alert("Preenche tudo!");
+    if (!inputNome || !inputID || !inputMotivo) {
+        alert("Erro técnico: IDs do HTML não encontrados.");
+        return;
+    }
+
+    const nome = inputNome.value.trim();
+    const bID = inputID.value.trim();
+    const motivo = inputMotivo.value.trim();
+    const nivel = inputNivel ? inputNivel.value : "Baixo";
+
+    if (!nome || !bID || !motivo) {
+        alert("Preenche todos os campos obrigatórios!");
+        return;
+    }
 
     try {
         await db.collection("blacklist").add({
             nome: nome,
             id: bID,
             motivo: motivo,
+            perigo: nivel, // Guarda o nível de perigo
             autor: currentUser ? currentUser.username : "Sistema",
-            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
             data: new Date().toLocaleDateString('pt-PT'),
-            hora: new Date().toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })
+            hora: new Date().toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' }),
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
         });
-        await registrarLog(`Adicionou ${nome} à Blacklist`);
-        alert("🚨 Blacklist Registada!");
-        document.getElementById("formBlacklist").reset();
-    } catch (e) { 
-        console.error(e); 
-    } 
+
+        await registrarLog(`Blacklist: Adicionou ${nome} (Nível: ${nivel})`);
+        alert("🚨 Registo efetuado com sucesso!");
+        
+        // Limpa os campos
+        inputNome.value = "";
+        inputID.value = "";
+        inputMotivo.value = "";
+        
+    } catch (e) {
+        console.error("Erro Firebase:", e);
+        alert("Erro ao salvar. Verifica se as 'Rules' do Firebase estão abertas!");
+    }
 }
 
 async function removerDaBlacklist(id) {
