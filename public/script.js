@@ -58,7 +58,7 @@ async function login() {
         const userCredential = await auth.signInWithEmailAndPassword(emailTecnico, pass);
         
         let role = "Agente";
-        if (["rodrigo", "tomas"].includes(username)) {
+        if (["jose", "tomas"].includes(username)) {
             role = "Diretor Nacional";
         } else if (username.includes("superior")) {
             role = "Superiores";
