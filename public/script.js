@@ -55,14 +55,49 @@ async function login() {
     const emailTecnico = username + "@psp.com"; 
 
     try {
-        const userCredential = await auth.signInWithEmailAndPassword(emailTecnico, pass);
-        
-        let role = "Agente";
-        if (["jose", "tomas", "rodrigo"].includes(username)) {
-            role = "Diretor Nacional";
-        } else if (username.includes("superior")) {
-            role = "Superiores";
-        }
+      const userCredential = await auth.signInWithEmailAndPassword(emailTecnico, pass);
+
+let role = "Agente"; // padrão
+if (["tomas"].includes(username)) {
+    role = "Diretor Nacional";
+} else if (["jose", "rodrigo"].includes(username)) {
+    role = "Diretor Nacional Adjunto";
+} else if (["superior1", "superior2"].includes(username)) {
+    role = "Superintendente-Chefe";
+} else if (["superior3"].includes(username)) {
+    role = "Superintendente";
+} else if (["intendente1"].includes(username)) {
+    role = "Intendente";
+} else if (["subintendente1"].includes(username)) {
+    role = "Subintendente";
+} 
+} else if (["comissario1"].includes(username)) {
+    role = "Comissário";
+} 
+} else if (["subcomissario1"].includes(username)) {
+    role = "Subcomissário";
+} 
+} else if (["chefecoordenador1"].includes(username)) {
+    role = "Chefe Coordenador";
+} 
+} else if (["chefeprincipal1"].includes(username)) {
+    role = "Chefe Principal";
+} 
+} else if (["chefe1"].includes(username)) {
+    role = "Chefe";
+} 
+} else if (["agentecoordenador1"].includes(username)) {
+    role = "Agente Coordenador";
+} 
+} else if (["agenteprincipal1"].includes(username)) {
+    role = "Agente Principal";
+} 
+} else if (["agente1"].includes(username)) {
+    role = "Agente";
+} 
+} else if (["agenteprovisorio1"].includes(username)) {
+    role = "Agente Provisório";
+} 
 
         const userData = {
             uid: userCredential.user.uid,
@@ -114,8 +149,16 @@ function loadCurrentUser() {
 
     if (hubLink) hubLink.style.display = currentUser ? "inline-block" : "none";
     if (superioresLink) {
-        superioresLink.style.display = currentUser && ["Superiores", "Diretor Nacional"].includes(currentUser.role) ? "inline-block" : "none";
+        const allowedRoles = [
+            "Diretor Nacional",
+            "Diretor Nacional Adjunto",
+            "Superintendente-Chefe",
+            "Superintendente",
+            "Intendente"
+        ];
+        superioresLink.style.display = (currentUser && allowedRoles.includes(currentUser.role)) ? "inline-block" : "none";
     }
+}
     if (codigos10Link) codigos10Link.style.display = currentUser ? "inline-block" : "none";
     if (logoutBtn) logoutBtn.style.display = currentUser ? "inline-block" : "none";
 }
