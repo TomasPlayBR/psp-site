@@ -127,7 +127,7 @@ function loadCurrentUser() {
     if (logoutBtn) logoutBtn.style.display = currentUser ? "inline-block" : "none";
 
     if (superioresLink) {
-        const allowedRoles = ["Diretor Nacional", "Diretor Nacional Adjunto", "Superintendente-Chefe", "Superintendente", "Intendente"];
+        const allowedRoles = ["Diretor Nacional", "Diretor Nacional Adjunto", "Superintendente-Chefe", "Superintendente", "Intendente", "Subintendente", "Comissário", "Subcomissário"];
         superioresLink.style.display = (currentUser && allowedRoles.includes(currentUser.role)) ? "inline-block" : "none";
     }
 }
