@@ -429,6 +429,86 @@ header img {
 }
 
 /* ======================
+   BOTÃO VOLTAR AO INÍCIO
+====================== */
+
+.back-home-box{
+    text-align:center;
+    margin-top:50px;
+}
+
+/* BOTÃO PRINCIPAL */
+
+.back-home-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:12px;
+
+    padding:16px 50px;
+
+    font-weight:bold;
+    letter-spacing:1px;
+    text-transform:uppercase;
+
+    color:#0b1c2d;
+    text-decoration:none;
+
+    background:linear-gradient(135deg,#f0c040,#ffd95e);
+    border-radius:14px;
+
+    box-shadow:
+        0 0 15px rgba(240,192,64,0.6),
+        0 0 35px rgba(240,192,64,0.3);
+
+    transition:all 0.3s ease;
+    position:relative;
+    overflow:hidden;
+}
+
+/* BRILHO ANIMADO */
+
+.back-home-btn::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:-75%;
+    width:50%;
+    height:100%;
+    background:linear-gradient(
+        120deg,
+        transparent,
+        rgba(255,255,255,0.7),
+        transparent
+    );
+    transform:skewX(-25deg);
+    transition:0.7s;
+}
+
+.back-home-btn:hover::before{
+    left:130%;
+}
+
+/* HOVER */
+
+.back-home-btn:hover{
+    transform:translateY(-4px) scale(1.06);
+    box-shadow:
+        0 0 25px rgba(240,192,64,0.9),
+        0 0 60px rgba(240,192,64,0.5);
+}
+
+/* ÍCONE */
+
+.back-home-btn .icon{
+    font-size:18px;
+    transition:0.3s;
+}
+
+.back-home-btn:hover .icon{
+    transform:translateX(-6px);
+}
+
+/* ======================
    FOOTER
 ====================== */
 footer {
