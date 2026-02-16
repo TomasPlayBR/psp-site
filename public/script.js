@@ -57,9 +57,7 @@ async function login() {
     try {
         const userCredential = await auth.signInWithEmailAndPassword(emailTecnico, pass);
 
-        let role = "Agente"; // Padrão
-        
-        // HIERARQUIA DE CARGOS ATUALIZADA
+        let role = "Agente"; 
         if (["tomas"].includes(username)) role = "Diretor Nacional";
         else if (["jose", "rodrigo"].includes(username)) role = "Diretor Nacional Adjunto";
         else if (["superior1", "superior2"].includes(username)) role = "Superintendente-Chefe";
@@ -124,22 +122,15 @@ function loadCurrentUser() {
     const codigos10Link = document.getElementById("codigos10Link");
     const logoutBtn = document.getElementById("logoutBtn");
 
-    if (hubLink) hubLink.style.display = currentUser ? "inline-block" : "none";
+   if (hubLink) hubLink.style.display = currentUser ? "inline-block" : "none";
+    if (codigos10Link) codigos10Link.style.display = currentUser ? "inline-block" : "none";
+    if (logoutBtn) logoutBtn.style.display = currentUser ? "inline-block" : "none";
+
     if (superioresLink) {
-        const allowedRoles = [
-            "Diretor Nacional",
-            "Diretor Nacional Adjunto",
-            "Superintendente-Chefe",
-            "Superintendente",
-            "Intendente"
-        ];
+        const allowedRoles = ["Diretor Nacional", "Diretor Nacional Adjunto", "Superintendente-Chefe", "Superintendente", "Intendente"];
         superioresLink.style.display = (currentUser && allowedRoles.includes(currentUser.role)) ? "inline-block" : "none";
     }
 }
-    if (codigos10Link) codigos10Link.style.display = currentUser ? "inline-block" : "none";
-    if (logoutBtn) logoutBtn.style.display = currentUser ? "inline-block" : "none";
-}
-
 
 function filtrarHub() {
     const input = document.getElementById("searchHub").value.toUpperCase();
