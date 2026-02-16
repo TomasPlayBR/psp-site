@@ -55,9 +55,11 @@ async function login() {
     const emailTecnico = username + "@psp.com"; 
 
     try {
-      const userCredential = await auth.signInWithEmailAndPassword(emailTecnico, pass);
+        const userCredential = await auth.signInWithEmailAndPassword(emailTecnico, pass);
 
-let role = "Agente"; // padrão
+        let role = "Agente"; // Padrão
+        
+        // HIERARQUIA DE CARGOS ATUALIZADA
         if (["tomas"].includes(username)) role = "Diretor Nacional";
         else if (["jose", "rodrigo"].includes(username)) role = "Diretor Nacional Adjunto";
         else if (["superior1", "superior2"].includes(username)) role = "Superintendente-Chefe";
@@ -79,7 +81,7 @@ let role = "Agente"; // padrão
             username: username.charAt(0).toUpperCase() + username.slice(1),
             role: role
         };
-       
+        
         localStorage.setItem("loggedUser", JSON.stringify(userData));
         currentUser = userData;
 
