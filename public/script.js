@@ -106,18 +106,20 @@ function loadCurrentUser() {
         userSpan.innerText = currentUser ? `${currentUser.username} (${currentUser.role})` : "Visitante";
     }
 
+    // Links do menu
     const hubLink = document.getElementById("hubLink");
     const superioresLink = document.getElementById("superioresLink");
+    const codigos10Link = document.getElementById("codigos10Link");
     const logoutBtn = document.getElementById("logoutBtn");
 
-    if (logoutBtn) logoutBtn.style.display = currentUser ? "inline-block" : "none";
     if (hubLink) hubLink.style.display = currentUser ? "inline-block" : "none";
-    
     if (superioresLink) {
-        const isSuperior = currentUser && ["Superiores", "Diretor Nacional"].includes(currentUser.role);
-        superioresLink.style.display = isSuperior ? "inline-block" : "none";
+        superioresLink.style.display = currentUser && ["Superiores", "Diretor Nacional"].includes(currentUser.role) ? "inline-block" : "none";
     }
+    if (codigos10Link) codigos10Link.style.display = currentUser ? "inline-block" : "none";
+    if (logoutBtn) logoutBtn.style.display = currentUser ? "inline-block" : "none";
 }
+
 
 function filtrarHub() {
     const input = document.getElementById("searchHub").value.toUpperCase();
