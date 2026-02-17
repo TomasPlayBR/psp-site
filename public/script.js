@@ -122,13 +122,13 @@ function loadCurrentUser() {
     const codigos10Link = document.getElementById("codigos10Link");
     const logoutBtn = document.getElementById("logoutBtn");
 
-   if (hubLink) hubLink.style.display = currentUser ? "inline-block" : "none";
+    if (hubLink) hubLink.style.display = currentUser ? "inline-block" : "none";
     if (codigos10Link) codigos10Link.style.display = currentUser ? "inline-block" : "none";
     if (logoutBtn) logoutBtn.style.display = currentUser ? "inline-block" : "none";
 
+    // APENAS Diretor Nacional vê o link
     if (superioresLink) {
-        const allowedRoles = ["Diretor Nacional", "Diretor Nacional Adjunto", "Superintendente-Chefe", "Superintendente", "Intendente", "Subintendente", "Comissário", "Subcomissário"];
-        superioresLink.style.display = (currentUser && allowedRoles.includes(currentUser.role)) ? "inline-block" : "none";
+        superioresLink.style.display = (currentUser && currentUser.role === "Diretor Nacional") ? "inline-block" : "none";
     }
 }
 
@@ -409,16 +409,24 @@ function renderLogs() {
 /* =========================
    8. INICIALIZAÇÃO
 ========================= */
+/* =========================
+   8. INICIALIZAÇÃO E PROTEÇÃO DE ACESSO
+========================= */
 document.addEventListener("DOMContentLoaded", () => {
     loadCurrentUser();
+    
+    // Renderizar tabelas conforme a página onde estamos
     if (document.querySelector("#hubTable")) renderHub();
     if (document.getElementById("blacklistContainer")) renderBlacklist();
     if (document.getElementById("logTableBody")) renderLogs();
 
+    // Verificação de segurança para páginas restritas
     const path = window.location.pathname;
     if (path.includes("logs.html") || path.includes("superiores.html")) {
-        if (!currentUser || !["Superiores", "Diretor Nacional"].includes(currentUser.role)) {
-            alert("Acesso Negado!");
+        
+        // REGRA RESTRITA: Só entra se o role for EXATAMENTE Diretor Nacional
+        if (!currentUser || currentUser.role !== "Diretor Nacional") {
+            alert("Acesso Negado! Esta área é exclusiva para o Diretor Nacional.");
             window.location.href = "index.html";
         }
     }
