@@ -71,7 +71,7 @@ async function login() {
         else if (["chefe1"].includes(username)) role = "Chefe";
         else if (["agentecoordenador1"].includes(username)) role = "Agente Coordenador";
         else if (["agenteprincipal1"].includes(username)) role = "Agente Principal";
-        else if (["leandro", "rayzer", "mafu", "Viveiros", "Gui", "Afonso"].includes(username)) role = "Agente";
+        else if (["leandro", "rayzer", "mafu", "Viveiros", "Gui", "Afonso", "Pepsi"].includes(username)) role = "Agente";
         else if (["agenteprovisorio1"].includes(username)) role = "Agente Provisório";
 
         const userData = {
