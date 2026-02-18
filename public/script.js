@@ -146,25 +146,19 @@ async function logout() {
 ========================= */
 function loadCurrentUser() {
     const stored = localStorage.getItem("loggedUser");
-    if (stored) currentUser = JSON.parse(stored);
+    if (stored) {
+        currentUser = JSON.parse(stored);
+        console.log("Utilizador detetado:", currentUser.username, "Cargo:", currentUser.role);
+    }
 
     const userSpan = document.getElementById("loggedUser");
     if (userSpan) {
         userSpan.innerText = currentUser ? `${currentUser.username} (${currentUser.role})` : "Visitante";
     }
 
-    // Links do menu
-    const hubLink = document.getElementById("hubLink");
     const superioresLink = document.getElementById("superioresLink");
-    const codigos10Link = document.getElementById("codigos10Link");
-    const logoutBtn = document.getElementById("logoutBtn");
-
-    if (hubLink) hubLink.style.display = currentUser ? "inline-block" : "none";
-    if (codigos10Link) codigos10Link.style.display = currentUser ? "inline-block" : "none";
-    if (logoutBtn) logoutBtn.style.display = currentUser ? "inline-block" : "none";
-
     if (superioresLink) {
-        // Lista de cargos que PODEM ver a aba de Superiores
+        // Lista de cargos autorizados
         const allowedRoles = [
             "Diretor Nacional", 
             "Diretor Nacional Adjunto", 
@@ -175,11 +169,17 @@ function loadCurrentUser() {
             "Comissário", 
             "Subcomissário"
         ];
-        
-        const temAcesso = currentUser && allowedRoles.includes(currentUser.role);
-        superioresLink.style.display = temAcesso ? "inline-block" : "none";
+
+        // Verificação Robusta
+        if (currentUser && allowedRoles.includes(currentUser.role)) {
+            superioresLink.style.display = "inline-block";
+            console.log("Acesso à aba Superiores: AUTORIZADO");
+        } else {
+            superioresLink.style.display = "none";
+            console.log("Acesso à aba Superiores: NEGADO");
+        }
     }
-} 
+}
 
 function filtrarHub() {
     const input = document.getElementById("searchHub").value.toUpperCase();
