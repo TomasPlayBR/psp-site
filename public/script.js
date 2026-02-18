@@ -50,6 +50,7 @@ async function login() {
 
     if(!userInp || !passInp) return;
 
+    // 1. O segredo está aqui: tudo passa a minúsculas
     const username = userInp.value.trim().toLowerCase();
     const pass = passInp.value.trim();
     const emailTecnico = username + "@psp.com"; 
@@ -57,24 +58,56 @@ async function login() {
     try {
         const userCredential = await auth.signInWithEmailAndPassword(emailTecnico, pass);
 
-        let role = "Agente"; 
-        if (["tomas"].includes(username)) role = "Diretor Nacional";
-        // Ferreira agora em minúsculas para bater certo com o toLowerCase()
-        else if (["jose", "rodrigo"].includes(username)) role = "Diretor Nacional Adjunto";
-        else if (["superior1", "superior2"].includes(username)) role = "Superintendente-Chefe";
-        else if (["superior3"].includes(username)) role = "Superintendente";
-        else if (["intendente1"].includes(username)) role = "Intendente";
-        else if (["ferreira"].includes(username)) role = "Subintendente";
-        else if (["comissario1"].includes(username)) role = "Comissário";
-        else if (["subcomissario1"].includes(username)) role = "Subcomissário";
-        else if (["chefecoordenador1"].includes(username)) role = "Chefe Coordenador";
-        else if (["chefeprincipal1"].includes(username)) role = "Chefe Principal";
-        else if (["chefe1"].includes(username)) role = "Chefe";
-        else if (["agentecoordenador1"].includes(username)) role = "Agente Coordenador";
-        else if (["agenteprincipal1"].includes(username)) role = "Agente Principal";
-        // Aqui também deves por todos em minúsculas
-        else if (["leandro", "rayzer", "mafu", "viveiros", "gui", "afonso", "pepsi", "raul", "silva", "lopes", "zétó", "silvazin", "limz", "crazy", "enzo"].includes(username)) role = "Agente";
-        else if (["agenteprovisorio1"].includes(username)) role = "Agente Provisório";
+        let role = "Agente"; // Se não estiver em nenhuma lista, é Agente
+
+        // 2. HIERARQUIA (O computador lê por ordem)
+        if (["tomas"].includes(username)) {
+            role = "Diretor Nacional";
+        } 
+        else if (["jose", "rodrigo"].includes(username)) {
+            role = "Diretor Nacional Adjunto";
+        } 
+        else if (["superior1", "superior2"].includes(username)) {
+            role = "Superintendente-Chefe";
+        } 
+        else if (["superior3"].includes(username)) {
+            role = "Superintendente";
+        } 
+        else if (["intendente1"].includes(username)) {
+            role = "Intendente";
+        } 
+        // AQUI: Ferreira como Subintendente (escrito em minúsculas)
+        else if (["aaaa", "ferreira"].includes(username)) {
+            role = "Subintendente";
+        } 
+        else if (["comissario1"].includes(username)) {
+            role = "Comissário";
+        } 
+        else if (["subcomissario1"].includes(username)) {
+            role = "Subcomissário";
+        } 
+        else if (["chefecoordenador1"].includes(username)) {
+            role = "Chefe Coordenador";
+        } 
+        else if (["chefeprincipal1"].includes(username)) {
+            role = "Chefe Principal";
+        } 
+        else if (["chefe1"].includes(username)) {
+            role = "Chefe";
+        } 
+        else if (["agentecoordenador1"].includes(username)) {
+            role = "Agente Coordenador";
+        } 
+        else if (["agenteprincipal1"].includes(username)) {
+            role = "Agente Principal";
+        } 
+        // LISTA DE AGENTES (Garante que o "ferreira" NÃO ESTÁ aqui)
+        else if (["leandro", "rayzer", "mafu", "viveiros", "gui", "afonso", "pepsi", "raul", "silva", "lopes", "zétó", "silvazin", "limz", "crazy", "enzo"].includes(username)) {
+            role = "Agente";
+        } 
+        else if (["agenteprovisorio1"].includes(username)) {
+            role = "Agente Provisório";
+        }
 
         const userData = {
             uid: userCredential.user.uid,
@@ -85,12 +118,14 @@ async function login() {
         localStorage.setItem("loggedUser", JSON.stringify(userData));
         currentUser = userData;
 
-        await registrarLog("Iniciou sessão no sistema");
+        await registrarLog("Iniciou sessão");
         window.location.href = "index.html";
 
     } catch (error) {
-        msg.innerText = "Utilizador ou Password incorreta!";
-        msg.style.color = "red";
+        if (msg) {
+            msg.innerText = "Utilizador ou Password incorreta!";
+            msg.style.color = "red";
+        }
     }
 }
 
