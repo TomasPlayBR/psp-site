@@ -59,11 +59,11 @@ async function login() {
 
         let role = "Agente"; 
         if (["tomas"].includes(username)) role = "Diretor Nacional";
-        else if (["jose", "rodrigo"].includes(username)) role = "Diretor Nacional Adjunto";
+        else if (["jose", "rodrigo", "Ferreira"].includes(username)) role = "Diretor Nacional Adjunto";
         else if (["superior1", "superior2"].includes(username)) role = "Superintendente-Chefe";
         else if (["superior3"].includes(username)) role = "Superintendente";
         else if (["intendente1"].includes(username)) role = "Intendente";
-        else if (["Ferreira"].includes(username)) role = "Subintendente";
+        else if (["AAAA"].includes(username)) role = "Subintendente";
         else if (["comissario1"].includes(username)) role = "Comissário";
         else if (["subcomissario1"].includes(username)) role = "Subcomissário";
         else if (["chefecoordenador1"].includes(username)) role = "Chefe Coordenador";
