@@ -142,6 +142,7 @@ function loadCurrentUser() {
         const temAcesso = currentUser && allowedRoles.includes(currentUser.role);
         superioresLink.style.display = temAcesso ? "inline-block" : "none";
     }
+} 
 
 function filtrarHub() {
     const input = document.getElementById("searchHub").value.toUpperCase();
@@ -418,9 +419,6 @@ function renderLogs() {
 }
 
 /* =========================
-   8. INICIALIZAÇÃO
-========================= */
-/* =========================
    8. INICIALIZAÇÃO E PROTEÇÃO DE ACESSO
 ========================= */
 document.addEventListener("DOMContentLoaded", () => {
@@ -431,13 +429,25 @@ document.addEventListener("DOMContentLoaded", () => {
     if (document.getElementById("blacklistContainer")) renderBlacklist();
     if (document.getElementById("logTableBody")) renderLogs();
 
-    // Verificação de segurança para páginas restritas
+    // Verificação de segurança para páginas restritas (Logs e Superiores)
     const path = window.location.pathname;
     if (path.includes("logs.html") || path.includes("superiores.html")) {
         
-        // REGRA RESTRITA: Só entra se o role for EXATAMENTE Diretor Nacional
-        if (!currentUser || currentUser.role !== "Diretor Nacional") {
-            alert("Acesso Negado! Esta área é exclusiva para o Diretor Nacional.");
+        // Lista de cargos autorizados a entrar nestas páginas
+        const allowedRoles = [
+            "Diretor Nacional", 
+            "Diretor Nacional Adjunto", 
+            "Superintendente-Chefe", 
+            "Superintendente", 
+            "Intendente", 
+            "Subintendente", 
+            "Comissário", 
+            "Subcomissário"
+        ];
+
+        // Se não estiver logado OU o cargo não estiver na lista, expulsa
+        if (!currentUser || !allowedRoles.includes(currentUser.role)) {
+            alert("Acesso Negado! Esta área é reservada ao Comando (Subcomissário ou superior).");
             window.location.href = "index.html";
         }
     }
