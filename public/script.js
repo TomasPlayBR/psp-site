@@ -59,11 +59,12 @@ async function login() {
 
         let role = "Agente"; 
         if (["tomas"].includes(username)) role = "Diretor Nacional";
-        else if (["jose", "rodrigo", "Ferreira"].includes(username)) role = "Diretor Nacional Adjunto";
+        // Ferreira agora em minúsculas para bater certo com o toLowerCase()
+        else if (["jose", "rodrigo", "ferreira"].includes(username)) role = "Diretor Nacional Adjunto";
         else if (["superior1", "superior2"].includes(username)) role = "Superintendente-Chefe";
         else if (["superior3"].includes(username)) role = "Superintendente";
         else if (["intendente1"].includes(username)) role = "Intendente";
-        else if (["AAAA"].includes(username)) role = "Subintendente";
+        else if (["aaaa"].includes(username)) role = "Subintendente";
         else if (["comissario1"].includes(username)) role = "Comissário";
         else if (["subcomissario1"].includes(username)) role = "Subcomissário";
         else if (["chefecoordenador1"].includes(username)) role = "Chefe Coordenador";
@@ -71,7 +72,8 @@ async function login() {
         else if (["chefe1"].includes(username)) role = "Chefe";
         else if (["agentecoordenador1"].includes(username)) role = "Agente Coordenador";
         else if (["agenteprincipal1"].includes(username)) role = "Agente Principal";
-        else if (["leandro", "rayzer", "mafu", "Viveiros", "Gui", "Afonso", "Pepsi", "Raul", "Silva", "Lopes", "ZéTó", "Silvazin", "Limz", "Crazy", "Enzo"].includes(username)) role = "Agente";
+        // Aqui também deves por todos em minúsculas
+        else if (["leandro", "rayzer", "mafu", "viveiros", "gui", "afonso", "pepsi", "raul", "silva", "lopes", "zétó", "silvazin", "limz", "crazy", "enzo"].includes(username)) role = "Agente";
         else if (["agenteprovisorio1"].includes(username)) role = "Agente Provisório";
 
         const userData = {
