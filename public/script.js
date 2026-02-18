@@ -1,4 +1,4 @@
-/* =========================
+   /* =========================
    1. CONFIGURAÇÃO FIREBASE
 ========================= */
 const firebaseConfig = {
@@ -126,11 +126,22 @@ function loadCurrentUser() {
     if (codigos10Link) codigos10Link.style.display = currentUser ? "inline-block" : "none";
     if (logoutBtn) logoutBtn.style.display = currentUser ? "inline-block" : "none";
 
-    // APENAS Diretor Nacional vê o link
     if (superioresLink) {
-        superioresLink.style.display = (currentUser && currentUser.role === "Diretor Nacional") ? "inline-block" : "none";
+        // Lista de cargos que PODEM ver a aba de Superiores
+        const allowedRoles = [
+            "Diretor Nacional", 
+            "Diretor Nacional Adjunto", 
+            "Superintendente-Chefe", 
+            "Superintendente", 
+            "Intendente", 
+            "Subintendente", 
+            "Comissário", 
+            "Subcomissário"
+        ];
+        
+        const temAcesso = currentUser && allowedRoles.includes(currentUser.role);
+        superioresLink.style.display = temAcesso ? "inline-block" : "none";
     }
-}
 
 function filtrarHub() {
     const input = document.getElementById("searchHub").value.toUpperCase();
