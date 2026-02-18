@@ -63,7 +63,7 @@ async function login() {
         else if (["superior1", "superior2"].includes(username)) role = "Superintendente-Chefe";
         else if (["superior3"].includes(username)) role = "Superintendente";
         else if (["intendente1"].includes(username)) role = "Intendente";
-        else if (["subintendente1"].includes(username)) role = "Subintendente";
+        else if (["Ferreira"].includes(username)) role = "Subintendente";
         else if (["comissario1"].includes(username)) role = "Comissário";
         else if (["subcomissario1"].includes(username)) role = "Subcomissário";
         else if (["chefecoordenador1"].includes(username)) role = "Chefe Coordenador";
@@ -71,7 +71,7 @@ async function login() {
         else if (["chefe1"].includes(username)) role = "Chefe";
         else if (["agentecoordenador1"].includes(username)) role = "Agente Coordenador";
         else if (["agenteprincipal1"].includes(username)) role = "Agente Principal";
-        else if (["leandro", "rayzer", "mafu", "Viveiros", "Gui", "Afonso", "Pepsi", "Raul", "Silva", "Lopes", "ZéTó", "Silvazin", "Limz", "Crazy", "Enzo", "Ferreira"].includes(username)) role = "Agente";
+        else if (["leandro", "rayzer", "mafu", "Viveiros", "Gui", "Afonso", "Pepsi", "Raul", "Silva", "Lopes", "ZéTó", "Silvazin", "Limz", "Crazy", "Enzo"].includes(username)) role = "Agente";
         else if (["agenteprovisorio1"].includes(username)) role = "Agente Provisório";
 
         const userData = {
